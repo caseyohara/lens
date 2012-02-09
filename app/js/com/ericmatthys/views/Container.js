@@ -5,7 +5,7 @@ define(
 	],
 	
     function (Backbone, Config) {
-		console.log('container');
+		console.log('container: ' + Config.getVideoID());
 		
 		var Container = Backbone.View.extend({
 			idName: Config.getVideoID(),

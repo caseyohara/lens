@@ -6,8 +6,6 @@ define(
 	],
 	
     function (Backbone, Config, template) {
-		console.log('controls');
-		
 		var Controls = Backbone.View.extend({
 			idName: Config.getVideoID() + '-controls',
 
