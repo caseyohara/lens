@@ -31,7 +31,7 @@ define(
 		});
 		
 		return {
-			constructor: ControlsView,
+			viewConstructor: ControlsView,
 			
 			create: function () {
 				var view = new ControlsView();
