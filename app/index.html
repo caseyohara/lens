@@ -11,11 +11,15 @@
 </head>
 
 <body>
-	<video id="test-video" src="videos/bunny.mp4"></video>
+	<video id="test-video" width="854" height="480" src="http://media.w3.org/2010/05/sintel/trailer.mp4"></video>
 	
 	<script type="text/javascript">
 		var empConfig = {
 			videoID: 'test-video'
 		}
+		
+		$('#test-video').bind('loadedmetadata', function () {
+			console.log('loaded metadata');
+		});
 	</script>
 </body>

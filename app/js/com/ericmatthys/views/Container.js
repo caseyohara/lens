@@ -17,7 +17,6 @@ define(
 			},
 			
 			onLoadedMetadata: function () {
-				console.log('####' + this.el.duration);
 				var duration = this.el.duration;
 				var formattedDuration = AppModel.video.secondsToHms(duration);
 				
