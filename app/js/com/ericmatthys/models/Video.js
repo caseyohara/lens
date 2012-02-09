@@ -12,10 +12,6 @@ define(
 				formattedDuration: '0:00',
 			},
 			
-			initialize: function () {
-				console.log('initialize');
-			},
-			
 			secondsToHms: function (seconds) {
 				seconds = Number(seconds);
 				var h = Math.floor(seconds / 3600);

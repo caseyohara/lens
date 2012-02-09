@@ -11,7 +11,7 @@ define(
 		var view;
 		
 		var Controls = Backbone.View.extend({
-			idName: Config.getVideoID() + '-controls',
+			className: 'emp-controls',
 			
 			model: AppModel.video,
 
@@ -20,19 +20,27 @@ define(
 			},
 
 			initialize: function () {
-				_.bindAll(this, 'render');
-				this.model.bind('change:currentTime', this.render);
+				_.bindAll(this, 'onCurrentTimeChange');
+				this.model.bind('change:currentTime', this.onCurrentTimeChange);
 			},
 			
 			render: function () {
-				console.log('rendering');
 				this.$el.html(_.template(template, AppModel.video.toJSON()));
 				return this;
 			},
 			
 			onPlayPauseClick: function () {
 				Container.playPause();
-				console.log('onPlayPauseClick');
+			},
+			
+			onCurrentTimeChange: function () {
+				this.render();
+				
+				var barWidth = $('.emp-seekbar').width();
+				var pct = AppModel.video.get('currentTime') / AppModel.video.get('duration');
+				
+				console.log(pct);
+				$('.emp-progress').width(barWidth * pct);
 			}
 		});
 		
@@ -42,9 +50,13 @@ define(
 			initialize: function () {
 				view = new Controls();
 				
+				var $videoEl = $('#' + Config.getVideoID());
+				
 				// Create the controls element and insert it into the DOM
-				var controlsEl = view.make('div', {'id': view.idName});
-				$('#' + Config.getVideoID()).after(controlsEl);
+				var controlsEl = view.make('div', {'class': view.className});
+				$videoEl.after(controlsEl);
+				
+				$('.' + view.className).width($videoEl.width());
 				
 				view.setElement(controlsEl);
 				view.render();

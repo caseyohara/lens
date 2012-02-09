@@ -1,1 +1,9 @@
-<button class="emp-play-pause">Play / Pause</button> <%= formattedTime %>/<%= formattedDuration %>
+<div class="emp-seekbar">
+	<div class="emp-progress"></div>
+</div>
+<button class="emp-play-pause"></button>
+<div class="emp-time"><span class="emp-current-time"><%= formattedTime %></span> / <%= formattedDuration %></div>
+<div class="emp-volume-container">
+	<div class="emp-volume-slider"></div>
+	<a class="emp-volume-button" title="Mute/Unmute"></a>
+</div>

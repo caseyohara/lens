@@ -7,9 +7,6 @@ define(
 		var Playlist = Backbone.Model.extend({
 			defaults: {
 				videos: []
-			},
-			initialize: function () {
-				console.log('initialize');
 			}
 		});
 		
