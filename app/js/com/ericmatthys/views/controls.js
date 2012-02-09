@@ -37,10 +37,6 @@ define(
 				view.render();
 				
 				return view;
-			},
-			
-			play: function () {
-				console.log('play');
 			}
 		};
     }
