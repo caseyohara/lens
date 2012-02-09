@@ -21,7 +21,7 @@ define(
 
 			initialize: function () {
 				_.bindAll(this, 'render');
-				this.model.bind('change', this.render);
+				this.model.bind('change:currentTime', this.render);
 			},
 			
 			render: function () {
