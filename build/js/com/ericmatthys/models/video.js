@@ -1,0 +1,1 @@
+define(["backbone"],function(a){var b=a.Model.extend({defaults:{duration:10},initialize:function(){console.log("initialize")}});return b})

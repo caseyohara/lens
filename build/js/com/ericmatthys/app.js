@@ -1,0 +1,1 @@
+define(["com/ericmatthys/config","com/ericmatthys/views/controls"],function(a,b){return{initialize:function(){},ready:function(){b.create(),a.getAutoPlay()===!0&&b.play()}}})
