@@ -1,16 +1,15 @@
 define(
 	[
-		'jquery',
 		'backbone',
 		'com/ericmatthys/config',
 		'text!templates/controls.html'
 	],
 	
-    function ($, Backbone, config, template) {
+    function (Backbone, config, template) {
 		console.log('controls');
 		
 		var ControlsView = Backbone.View.extend({
-			className: 'emp-controls',
+			idName: config.getVideoID() + '-controls',
 
 			events: {
 				'click .emp-play-pause': 'onPlayPauseClick',
@@ -37,8 +36,8 @@ define(
 				var view = new ControlsView();
 				
 				// Create the controls element and insert it into the DOM
-				var controlsEl = view.make('div', {'class': view.className});
-				$(controlsEl).insertAfter('#' + config.getVideoID());
+				var controlsEl = view.make('div', {'id': view.className});
+				$('#' + config.getVideoID()).after(controlsEl);
 				
 				view.setElement(controlsEl, true);
 				view.render();
