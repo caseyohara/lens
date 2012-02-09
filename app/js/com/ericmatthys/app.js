@@ -1,20 +1,21 @@
 define(
 	[
-		'com/ericmatthys/config',
-		'com/ericmatthys/views/controls'
+		'com/ericmatthys/Config',
+		'com/ericmatthys/views/Container',
+		'com/ericmatthys/views/Controls'
 	],
 	
-    function (config, controls) {
+    function (Config, Container, Controls) {
 		return {
 			initialize: function () {
 				
 			},
 			
 			ready: function () {
-				controls.create();
+				Controls.create();
 				
-				if( config.getAutoPlay() === true ) {
-					controls.play();
+				if( Config.getAutoPlay() === true ) {
+					Controls.play();
 				}
 			}
 		}

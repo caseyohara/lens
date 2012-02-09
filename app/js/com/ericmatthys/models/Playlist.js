@@ -4,9 +4,9 @@ define(
 	],
 	
 	function (Backbone) {
-		var Video = Backbone.Model.extend({
+		var Playlist = Backbone.Model.extend({
 			defaults: {
-				duration: 10
+				videos: []
 			},
 			initialize: function () {
 				console.log('initialize');

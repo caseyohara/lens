@@ -11,10 +11,10 @@ require.config({
 
 require(
 	[
-	'com/ericmatthys/app'
+	'com/ericmatthys/App'
 	],
 	
-	function (app) {
-		$(document).ready(app.ready);
+	function (App) {
+		$(document).ready(App.ready);
 	}
 );

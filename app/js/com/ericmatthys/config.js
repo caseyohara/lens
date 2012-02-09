@@ -4,32 +4,19 @@ define(
 		var videoID = 'emp-video';
 		var autoPlay = false;
 		
-		// Determine whether to use a global config object
-		var useGlobalConfig = true;
-		
-		if(empConfig.typeof === 'undefined') {
-			useGlobalConfig = false;
+		// Set the config options if available
+		if(empConfig.typeof !== 'undefined') {
+			videoID = empConfig.videoID || videoID;
+			autoPlay = empConfig.autoPlay || autoPlay;
 		}
 		
 		return {
 			getVideoID: function () {
-				if(useGlobalConfig === true) {
-					return empConfig.videoID;
-				}
-				else
-				{
-					return videoID;
-				}
+				return videoID;
 			},
 			
 			getAutoPlay: function () {
-				if(useGlobalConfig === true) {
-					return empConfig.autoPlay;
-				}
-				else
-				{
-					return autoPlay;
-				}
+				return autoPlay;
 			}
 		};
     }

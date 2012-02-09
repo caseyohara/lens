@@ -1,22 +1,18 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/config',
+		'com/ericmatthys/Config',
 		'text!templates/controls.html'
 	],
 	
-    function (Backbone, config, template) {
+    function (Backbone, Config, template) {
 		console.log('controls');
 		
-		var ControlsView = Backbone.View.extend({
-			idName: config.getVideoID() + '-controls',
+		var Controls = Backbone.View.extend({
+			idName: Config.getVideoID() + '-controls',
 
 			events: {
 				'click .emp-play-pause': 'onPlayPauseClick',
-			},
-			
-			initialize: function () {
-				console.log('initialize');
 			},
 			
 			render: function () {
@@ -30,14 +26,14 @@ define(
 		});
 		
 		return {
-			viewConstructor: ControlsView,
+			viewConstructor: Controls,
 			
 			create: function () {
-				var view = new ControlsView();
+				var view = new Controls();
 				
 				// Create the controls element and insert it into the DOM
 				var controlsEl = view.make('div', {'id': view.className});
-				$('#' + config.getVideoID()).after(controlsEl);
+				$('#' + Config.getVideoID()).after(controlsEl);
 				
 				view.setElement(controlsEl, true);
 				view.render();
