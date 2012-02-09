@@ -13,6 +13,6 @@ define(
 			}
 		});
 		
-		return Video;
+		return Playlist;
 	}
 );

@@ -5,7 +5,7 @@ define(
 		var autoPlay = false;
 		
 		// Set the config options if available
-		if(typeof(empConfig) !== 'undefined') {
+		if (typeof(empConfig) !== 'undefined') {
 			videoID = empConfig.videoID || videoID;
 			autoPlay = empConfig.autoPlay || autoPlay;
 		}

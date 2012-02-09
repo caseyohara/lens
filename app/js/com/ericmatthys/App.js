@@ -7,16 +7,9 @@ define(
 	
     function (Config, Container, Controls) {
 		return {
-			initialize: function () {
-				
-			},
-			
 			ready: function () {
-				Controls.create();
-				
-				if( Config.getAutoPlay() === true ) {
-					Controls.play();
-				}
+				Container.initialize();
+				Controls.initialize();
 			}
 		}
     }
