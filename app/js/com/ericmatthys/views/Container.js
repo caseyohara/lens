@@ -51,6 +51,10 @@ define(
 				} else {
 					el.pause();
 				}
+			},
+			
+			seek: function (time) {
+				view.el.currentTime = time;
 			}
 		}
     }

@@ -8,6 +8,10 @@ define(
 	],
 	
     function (Backbone, Config, AppModel, Container, template) {
+		var PLAY_PAUSE_CLASS = 'emp-play-pause';
+		var SEEK_BAR_CLASS = 'emp-seek-bar';
+		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
+	
 		var view;
 		
 		var Controls = Backbone.View.extend({
@@ -17,6 +21,7 @@ define(
 
 			events: {
 				'click .emp-play-pause': 'onPlayPauseClick',
+				'click .emp-seek-bar': 'onSeekBarClick'
 			},
 
 			initialize: function () {
@@ -33,15 +38,23 @@ define(
 				Container.playPause();
 			},
 			
+			onSeekBarClick: function (event) {
+				var clickX = event.pageX - this.el.offsetLeft;
+				var clickPct = clickX / this.$el.width();
+				var clickTime = clickPct * AppModel.video.get('duration');
+				
+				Container.seek(clickTime);
+			},
+			
 			onCurrentTimeChange: function () {
 				// Render the view to update the time values
 				this.render();
 				
 				// Update the progress bar to reflect the current time
-				var barWidth = $('.emp-seekbar').width();
+				var barWidth = $('.' + SEEK_BAR_CLASS).width();
 				var pct = AppModel.video.get('currentTime') / AppModel.video.get('duration');
 				
-				$('.emp-progress').width(barWidth * pct);
+				$('.' + PROGRESS_BAR_CLASS).width(barWidth * pct);
 			}
 		});
 		
