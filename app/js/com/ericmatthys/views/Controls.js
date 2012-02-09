@@ -34,12 +34,13 @@ define(
 			},
 			
 			onCurrentTimeChange: function () {
+				// Render the view to update the time values
 				this.render();
 				
+				// Update the progress bar to reflect the current time
 				var barWidth = $('.emp-seekbar').width();
 				var pct = AppModel.video.get('currentTime') / AppModel.video.get('duration');
 				
-				console.log(pct);
 				$('.emp-progress').width(barWidth * pct);
 			}
 		});
