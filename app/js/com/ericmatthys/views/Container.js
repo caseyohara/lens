@@ -20,9 +20,17 @@ define(
 			onLoadedMetadata: function () {
 				var duration = this.el.duration;
 				var formattedDuration = AppModel.video.secondsToHms(duration);
+				var time = this.el.currentTime;
+				var formattedTime = AppModel.video.secondsToHms(time);
 				
-				AppModel.video.set({duration: duration});
-				AppModel.video.set({formattedDuration: formattedDuration});
+				AppModel.video.set({
+					duration: duration,
+					formattedDuration: formattedDuration,
+					currentTime: time,
+					formattedTime: formattedTime,
+					volume: this.el.volume,
+					playbackRate: this.el.playbackRate
+				});
 			},
 			
 			onTimeUpdate: function () {
@@ -34,7 +42,8 @@ define(
 			},
 			
 			onEnded: function () {
-				AppModel.video.set({'paused': true});
+				AppModel.video.set({paused: true});
+				this.el.pause();
 			}
 		});
 		
@@ -51,16 +60,16 @@ define(
 			playPause: function() {
 				var el = view.el;
 				
-				if (el.paused === true || el.ended === true) {
+				if (el.paused === true) {
 					// If the video has ended, restart from the beginning
 					if (el.ended === true) {
 						view.el.currentTime = 0;
 					}
 					
-					AppModel.video.set({'paused': false});
+					AppModel.video.set({paused: false});
 					el.play();
 				} else {
-					AppModel.video.set({'paused': true});
+					AppModel.video.set({paused: true});
 					el.pause();
 				}
 			},
@@ -70,8 +79,17 @@ define(
 			},
 			
 			setVolume: function (volume) {
-				AppModel.video.set({'volume': volume});
+				AppModel.video.set({volume: volume});
 				view.el.volume = volume;
+			},
+
+			setPlaybackRate: function (playbackRate) {
+				AppModel.video.set({playbackRate: playbackRate});
+				view.el.playbackRate = playbackRate;
+			},
+			
+			supportsPlaybackRate: function () {
+				return (typeof(view.el.playbackRate) !== 'undefined');
 			}
 		}
     }

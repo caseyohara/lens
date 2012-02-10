@@ -11,6 +11,7 @@ define(
 				formattedTime: '0:00',
 				formattedDuration: '0:00',
 				volume: 1,
+				playbackRate: 1,
 				paused: true
 			},
 			
