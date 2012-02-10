@@ -1,1 +1,1 @@
-define(function(){var a="emp-video",b=!1,c=!0;return empConfig.typeof==="undefined"&&(c=!1),{getVideoID:function(){return c===!0?empConfig.videoID:a},getAutoPlay:function(){return c===!0?empConfig.autoPlay:b}}})
+define(function(){var a="emp-video",b=!1;return typeof empConfig!="undefined"&&(a=empConfig.videoID||a,b=empConfig.autoPlay||b),{getVideoID:function(){return a},getAutoPlay:function(){return b}}})

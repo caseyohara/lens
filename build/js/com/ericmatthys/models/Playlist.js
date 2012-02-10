@@ -1,0 +1,1 @@
+define(["backbone"],function(a){var b=a.Model.extend({defaults:{videos:[]}});return b})

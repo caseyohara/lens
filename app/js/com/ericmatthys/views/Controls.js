@@ -34,7 +34,10 @@ define(
 				return this;
 			},
 			
-			onPlayPauseClick: function () {
+			onPlayPauseClick: function (event) {
+				// Prevent the click from navigating to a href value
+				event.preventDefault();
+				
 				Container.playPause();
 			},
 			

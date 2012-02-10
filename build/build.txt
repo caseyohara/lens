@@ -1,12 +1,16 @@
 
 js/main.js
 ----------------
-/Users/eric/Documents/work/presentations/amd/example/app/js/libs/jquery-1.7.1-min.js
-js/com/ericmatthys/config.js
-/Users/eric/Documents/work/presentations/amd/example/app/js/libs/underscore-1.3.1-min.js
-/Users/eric/Documents/work/presentations/amd/example/app/js/libs/backbone-0.9.1-min.js
+js/com/ericmatthys/Config.js
+/Users/eric/Dev/ericmatthys/experiments/emplayer/app/js/libs/underscore-1.3.1-min.js
+/Users/eric/Dev/ericmatthys/experiments/emplayer/app/js/libs/jquery.js
+/Users/eric/Dev/ericmatthys/experiments/emplayer/app/js/libs/backbone-0.9.1-min.js
+js/com/ericmatthys/models/Video.js
+js/com/ericmatthys/models/Playlist.js
+js/com/ericmatthys/models/AppModel.js
+js/com/ericmatthys/views/Container.js
 js/text.js
 text!templates/controls.html
-js/com/ericmatthys/views/controls.js
-js/com/ericmatthys/app.js
+js/com/ericmatthys/views/Controls.js
+js/com/ericmatthys/App.js
 js/main.js

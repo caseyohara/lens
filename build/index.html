@@ -5,17 +5,19 @@
 	<title>RequireJS Example</title>
 	<meta charset="utf-8">
 	
-	<script type="text/javascript" src="js/libs/require.js"></script>	
+	<link rel="stylesheet" href="css/player.css" />
+	
+	<script type="text/javascript" src="js/libs/zepto-0.8-min.js"></script>
+	<script type="text/javascript" src="js/libs/require-1.0.5-min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 </head>
 
 <body>
-	<video id="test-video" width="500" height="500"></video>
+	<video id="test-video" width="800" height="480" src="http://media.w3.org/2010/05/sintel/trailer.mp4"></video>
 	
 	<script type="text/javascript">
 		var empConfig = {
-			videoID: 'test-video',
-			autoPlay: true
+			videoID: 'test-video'
 		}
 	</script>
 </body>
