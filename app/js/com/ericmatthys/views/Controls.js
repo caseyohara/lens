@@ -11,17 +11,20 @@ define(
 		var PLAY_PAUSE_CLASS = 'emp-play-pause';
 		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
+		var PROGRESS_THUMB_CLASS = 'emp-progress-thumb';
 	
 		var view;
 		
 		var Controls = Backbone.View.extend({
 			className: 'emp-controls',
-			
 			model: AppModel.video,
+			seeking: false,
 
 			events: {
 				'click .emp-play-pause': 'onPlayPauseClick',
-				'click .emp-seek-bar': 'onSeekBarClick'
+				'mousedown .emp-seek-bar': 'onSeekBarMouseDown',
+				'mousemove .emp-seek-bar': 'onSeekBarMouseMove',
+				'mouseup .emp-seek-bar': 'onSeekBarMouseUp'
 			},
 
 			initialize: function () {
@@ -34,6 +37,14 @@ define(
 				return this;
 			},
 			
+			seek: function (x) {
+				var clickX = x - this.el.offsetLeft;
+				var clickPct = clickX / this.$el.width();
+				var clickTime = clickPct * AppModel.video.get('duration');
+
+				Container.seek(clickTime);
+			},
+			
 			onPlayPauseClick: function (event) {
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
@@ -41,12 +52,31 @@ define(
 				Container.playPause();
 			},
 			
-			onSeekBarClick: function (event) {
-				var clickX = event.pageX - this.el.offsetLeft;
-				var clickPct = clickX / this.$el.width();
-				var clickTime = clickPct * AppModel.video.get('duration');
+			onSeekBarMouseDown: function (event) {
+				// Prevent the click from trying to select
+				event.preventDefault();
 				
-				Container.seek(clickTime);
+				this.seeking = true;
+				this.seek(event.pageX);
+			},
+
+			onSeekBarMouseMove: function (event) {
+				if (this.seeking === true) {
+					// Prevent the click from trying to select
+					event.preventDefault();
+					
+					this.seek(event.pageX);
+				}
+			},
+			
+			onSeekBarMouseUp: function (event) {
+				if (this.seeking === true) {
+					// Prevent the click from trying to select
+					event.preventDefault();
+					
+					this.seeking = false;
+					this.seek(event.pageX);
+				}
 			},
 			
 			onCurrentTimeChange: function () {
@@ -54,10 +84,19 @@ define(
 				this.render();
 				
 				// Update the progress bar to reflect the current time
-				var barWidth = $('.' + SEEK_BAR_CLASS).width();
+				var seekBarWidth = $('.' + SEEK_BAR_CLASS).width();
 				var pct = AppModel.video.get('currentTime') / AppModel.video.get('duration');
+				var progressBarWidth = pct * seekBarWidth;
 				
-				$('.' + PROGRESS_BAR_CLASS).width(barWidth * pct);
+				// Constrain the progess bar so the thumb fits in the seek bar
+				if (progressBarWidth < 4) {
+					progressBarWidth = 4;
+				} else if (progressBarWidth + 4 > seekBarWidth) {
+					progressBarWidth = seekBarWidth - 4;
+				}
+				
+				$('.' + PROGRESS_BAR_CLASS).width(progressBarWidth);
+				$('.' + PROGRESS_THUMB_CLASS).css('left', progressBarWidth - 4);
 			}
 		});
 		
