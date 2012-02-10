@@ -7,7 +7,7 @@ define(
 	
     function (Config, Container, Controls) {
 		return {
-			ready: function () {
+			initialize: function () {
 				Container.initialize();
 				Controls.initialize();
 			}

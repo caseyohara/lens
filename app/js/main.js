@@ -15,6 +15,6 @@ require(
 	],
 	
 	function (App) {
-		$(document).ready(App.ready);
+		App.initialize();
 	}
 );
