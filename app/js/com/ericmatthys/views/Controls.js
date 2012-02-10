@@ -18,17 +18,17 @@ define(
 		var Controls = Backbone.View.extend({
 			className: 'emp-controls',
 			model: AppModel.video,
-			seeking: false,
 
 			events: {
 				'click .emp-play-pause': 'onPlayPauseClick',
-				'mousedown .emp-seek-bar': 'onSeekBarMouseDown',
-				'mousemove .emp-seek-bar': 'onSeekBarMouseMove',
-				'mouseup .emp-seek-bar': 'onSeekBarMouseUp'
+				'mousedown .emp-seek-bar': 'onSeekBarMouseDown'
 			},
 
 			initialize: function () {
 				_.bindAll(this, 'onCurrentTimeChange');
+				_.bindAll(this, 'onSeekBarMouseMove');
+				_.bindAll(this, 'onSeekBarMouseUp');
+				
 				this.model.bind('change', this.onCurrentTimeChange);
 			},
 			
@@ -56,27 +56,27 @@ define(
 				// Prevent the click from trying to select
 				event.preventDefault();
 				
-				this.seeking = true;
+				$(document).bind('mousemove', this.onSeekBarMouseMove);
+				$(document).bind('mouseup', this.onSeekBarMouseUp);
+				
 				this.seek(event.pageX);
 			},
 
 			onSeekBarMouseMove: function (event) {
-				if (this.seeking === true) {
-					// Prevent the click from trying to select
-					event.preventDefault();
-					
-					this.seek(event.pageX);
-				}
+				// Prevent the click from trying to select
+				event.preventDefault();
+				
+				this.seek(event.pageX);
 			},
 			
 			onSeekBarMouseUp: function (event) {
-				if (this.seeking === true) {
-					// Prevent the click from trying to select
-					event.preventDefault();
+				// Prevent the click from trying to select
+				event.preventDefault();
+
+				$(document).unbind('mousemove', this.onSeekBarMouseMove);
+				$(document).unbind('mouseup', this.onSeekBarMouseUp);
 					
-					this.seeking = false;
-					this.seek(event.pageX);
-				}
+				this.seek(event.pageX);
 			},
 			
 			onCurrentTimeChange: function () {
