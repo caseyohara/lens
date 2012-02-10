@@ -10,6 +10,7 @@ define(
 				duration: 0,
 				formattedTime: '0:00',
 				formattedDuration: '0:00',
+				volume: 1,
 				paused: true
 			},
 			

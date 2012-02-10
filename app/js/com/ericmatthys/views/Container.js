@@ -13,7 +13,8 @@ define(
 
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',
-				'timeupdate': 'onTimeUpdate'
+				'timeupdate': 'onTimeUpdate',
+				'ended': 'onEnded'
 			},
 			
 			onLoadedMetadata: function () {
@@ -30,6 +31,10 @@ define(
 				
 				AppModel.video.set({currentTime: time});
 				AppModel.video.set({formattedTime: formattedTime});
+			},
+			
+			onEnded: function () {
+				AppModel.video.set({'paused': true});
 			}
 		});
 		
@@ -46,17 +51,27 @@ define(
 			playPause: function() {
 				var el = view.el;
 				
-				if (el.paused === true) {
+				if (el.paused === true || el.ended === true) {
+					// If the video has ended, restart from the beginning
+					if (el.ended === true) {
+						view.el.currentTime = 0;
+					}
+					
+					AppModel.video.set({'paused': false});
 					el.play();
 				} else {
+					AppModel.video.set({'paused': true});
 					el.pause();
 				}
-
-				AppModel.video.set({'paused': el.paused});
 			},
 			
 			seek: function (time) {
 				view.el.currentTime = time;
+			},
+			
+			setVolume: function (volume) {
+				AppModel.video.set({'volume': volume});
+				view.el.volume = volume;
 			}
 		}
     }

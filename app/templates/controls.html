@@ -2,15 +2,23 @@
 	<div class="emp-progress-thumb"></div>
 	<div class="emp-progress-bar"></div>
 </div>
+
 <a class="emp-play-pause<%
-	if (paused) {
-		print(' emp-pause')
-	} else {
-		print(' emp-play')
+	if (paused !== true) {
+		print(' emp-pause');
 	}
 %>" href="#"></a>
-<div class="emp-time"><span class="emp-current-time"><%= formattedTime %></span> / <%= formattedDuration %></div>
+
+<div class="emp-divider"></div>
+
 <div class="emp-volume-container">
-	<div class="emp-volume-slider"></div>
-	<a class="emp-volume-button" title="Mute/Unmute"></a>
+	<a class="emp-volume-button" href="#"></a>
+	<div class="emp-volume-slider">
+		<div class="emp-volume-thumb"></div>
+		<div class="emp-volume-bar"></div>
+	</div>
 </div>
+
+<div class="emp-divider"></div>
+
+<div class="emp-time"><span class="emp-current-time"><%= formattedTime %></span> / <%= formattedDuration %></div>
