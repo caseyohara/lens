@@ -10,6 +10,7 @@ define(
 				duration: 0,
 				formattedTime: '0:00',
 				formattedDuration: '0:00',
+				paused: true
 			},
 			
 			secondsToHms: function (seconds) {

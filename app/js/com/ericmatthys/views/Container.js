@@ -51,6 +51,8 @@ define(
 				} else {
 					el.pause();
 				}
+
+				AppModel.video.set({'paused': el.paused});
 			},
 			
 			seek: function (time) {

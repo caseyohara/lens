@@ -24,6 +24,19 @@ video {
 	display: block;
 	width: 30px;
 	height: 30px;
+	background: transparent url(../images/play_pause.png);
+}
+
+.emp-play-pause:hover {
+	background-position-x: -30px;
+}
+
+.emp-play-pause.emp-play {
+	background-position-y: 30px;
+}
+
+.emp-play-pause.emp-pause {
+	background-position-y: 0;
 }
 
 .emp-seek-bar {
