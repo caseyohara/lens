@@ -12,7 +12,9 @@ define(
 				formattedDuration: '0:00',
 				volume: 1,
 				playbackRate: 1,
-				paused: true
+				paused: true,
+				startBuffer: 0,
+				endBuffer: 0
 			},
 			
 			secondsToHms: function (seconds) {

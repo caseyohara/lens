@@ -1,15 +1,26 @@
 <div class="emp-seek-bar">
 	<div class="emp-progress-thumb"></div>
 	<div class="emp-progress-bar"></div>
+	<div class="emp-buffer-bar"></div>
 </div>
 
-<a class="emp-play-pause<%
+<a class="emp-play-pause-button<%
 	if (paused !== true) {
-		print(' emp-pause');
+		print(' emp-pause-button');
 	}
 %>" href="#"></a>
 
-<div class="emp-divider"></div>
+<div class="emp-divider-left"></div>
+
+<div class="emp-playback-rate-container">
+	<a class="emp-playback-rate-button" href="#"></a>
+	<div class="emp-playback-rate-slider">
+		<div class="emp-playback-rate-thumb"></div>
+		<div class="emp-playback-rate-bar"></div>
+	</div>
+</div>
+
+<div class="emp-divider-left"></div>
 
 <div class="emp-volume-container">
 	<a class="emp-volume-button" href="#"></a>
@@ -19,6 +30,8 @@
 	</div>
 </div>
 
-<div class="emp-divider"></div>
+<div class="emp-divider-right"></div>
 
-<div class="emp-time"><span class="emp-current-time"><%= formattedTime %></span> / <%= formattedDuration %></div>
+<div class="emp-time"><span class="emp-current-time"><%= formattedTime %></span> / <span class="emp-duration"><%= formattedDuration %></span></div>
+
+<div class="emp-divider-right"></div>

@@ -10,11 +10,16 @@ define(
 		
 		var Container = Backbone.View.extend({
 			idName: Config.getVideoID(),
+			bufferInterval: null,
 
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',
 				'timeupdate': 'onTimeUpdate',
 				'ended': 'onEnded'
+			},
+			
+			initialize: function () {
+				_.bindAll(this, 'onBufferUpdate');
 			},
 			
 			onLoadedMetadata: function () {
@@ -31,6 +36,39 @@ define(
 					volume: this.el.volume,
 					playbackRate: this.el.playbackRate
 				});
+				
+				if (typeof(this.el.buffered) !== 'undefined') {
+					var isBuffered = this.onBufferUpdate();
+					
+					// If the video hasn't already buffered, start an interval to track it
+					if (isBuffered !== true) {
+						this.bufferInterval = setInterval(this.onBufferUpdate, 500);
+					}
+				}
+			},
+			
+			onBufferUpdate: function () {
+				var buffered = this.el.buffered;
+				
+				 if (buffered.length > 0) {
+					var startBuffer = buffered.start(0);
+					var endBuffer = buffered.end(0);
+					
+					AppModel.video.set({
+						startBuffer: startBuffer,
+						endBuffer: endBuffer
+					});
+					
+					// If the video is done buffering, remove the interval
+					if (endBuffer == AppModel.video.get('duration')) {
+						if (this.bufferInterval !== null) {
+							clearInterval(this.bufferInterval);
+						}
+						return true;
+					} else {
+						return false;
+					}
+				}
 			},
 			
 			onTimeUpdate: function () {
@@ -53,6 +91,11 @@ define(
 			initialize: function () {
 				view = new Container();
 				view.setElement($('#' + view.idName));
+				
+				if (view.el.duration > 0) {
+					console.log('metadata already loaded');
+					view.onLoadedMetadata();
+				}
 				
 				return view;
 			},

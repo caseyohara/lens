@@ -4,19 +4,18 @@ define(
 		'com/ericmatthys/Config',
 		'com/ericmatthys/models/AppModel',
 		'com/ericmatthys/views/Container',
+		'com/ericmatthys/views/SeekBar',
 		'text!templates/controls.html'
 	],
 	
-    function (Backbone, Config, AppModel, Container, template) {
+    function (Backbone, Config, AppModel, Container, SeekBar, template) {
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
 		var PAUSE_CLASS = 'emp-pause-button';
 		
+		var SEEK_BAR_CLASS = 'emp-seek-bar';
+		
 		var CURRENT_TIME_CLASS = 'emp-current-time';
 		var DURATION_CLASS = 'emp-duration';
-		
-		var SEEK_BAR_CLASS = 'emp-seek-bar';
-		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
-		var PROGRESS_THUMB_CLASS = 'emp-progress-thumb';
 		
 		var VOLUME_CONTAINER_CLASS = 'emp-volume-container';
 		var VOLUME_BUTTON_CLASS = 'emp-volume-button';
@@ -30,8 +29,10 @@ define(
 		var PLAYBACK_RATE_SLIDER_CLASS = 'emp-playback-rate-slider';
 		var PLAYBACK_RATE_BAR_CLASS = 'emp-playback-rate-bar';
 		var PLAYBACK_RATE_THUMB_CLASS = 'emp-playback-rate-thumb';
+		var PLAYBACK_RATE_DIVIDER_CLASS = 'emp-divider-playback-rate';
 	
 		var view;
+		var seekBar;
 		
 		var Controls = Backbone.View.extend({
 			className: 'emp-controls',
@@ -46,14 +47,11 @@ define(
 				'mouseout .emp-volume-container': 'onVolumeContainerMouseOut',
 				'mouseover .emp-playback-rate-container': 'onPlaybackRateContainerMouseOver',
 				'mouseout .emp-playback-rate-container': 'onPlaybackRateContainerMouseOut',
-				'mousedown .emp-seek-bar': 'onSeekBarMouseDown',
 				'mousedown .emp-volume-slider': 'onVolumeSliderMouseDown',
 				'mousedown .emp-playback-rate-slider': 'onPlaybackRateSliderMouseDown'
 			},
 
 			initialize: function () {
-				_.bindAll(this, 'onSeekBarMouseMove');
-				_.bindAll(this, 'onSeekBarMouseUp');
 				_.bindAll(this, 'onVolumeSliderMouseMove');
 				_.bindAll(this, 'onVolumeSliderMouseUp');
 				_.bindAll(this, 'onPlaybackRateSliderMouseMove');
@@ -78,15 +76,6 @@ define(
 				this.onPlaybackRateChange();
 				
 				return this;
-			},
-			
-			seek: function (x) {
-				var $seekBar = $('.' + SEEK_BAR_CLASS);
-				var clickX = x - $seekBar.offset().left;
-				var clickPct = clickX / $seekBar.width();
-				var clickTime = clickPct * AppModel.video.get('duration');
-
-				Container.seek(clickTime);
 			},
 			
 			setVolume: function (x) {
@@ -164,33 +153,6 @@ define(
 				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: 40});
 			},
 			
-			onSeekBarMouseDown: function (event) {
-				// Prevent the click from trying to select
-				event.preventDefault();
-				
-				$(document).bind('mousemove', this.onSeekBarMouseMove);
-				$(document).bind('mouseup', this.onSeekBarMouseUp);
-				
-				this.seek(event.pageX);
-			},
-
-			onSeekBarMouseMove: function (event) {
-				// Prevent the click from trying to select
-				event.preventDefault();
-				
-				this.seek(event.pageX);
-			},
-			
-			onSeekBarMouseUp: function (event) {
-				// Prevent the click from trying to select
-				event.preventDefault();
-
-				$(document).unbind('mousemove', this.onSeekBarMouseMove);
-				$(document).unbind('mouseup', this.onSeekBarMouseUp);
-					
-				this.seek(event.pageX);
-			},
-			
 			onVolumeSliderMouseDown: function (event) {
 				// Prevent the click from trying to select
 				event.preventDefault();
@@ -222,7 +184,6 @@ define(
 				// Prevent the click from trying to select
 				event.preventDefault();
 				
-				console.log('playback rate slider');
 				$(document).bind('mousemove', this.onPlaybackRateSliderMouseMove);
 				$(document).bind('mouseup', this.onPlaybackRateSliderMouseUp);
 					
@@ -258,21 +219,6 @@ define(
 			},
 			
 			onCurrentTimeChange: function () {
-				// Update the progress bar to reflect the current time
-				var seekBarWidth = $('.' + SEEK_BAR_CLASS).width();
-				var pct = AppModel.video.get('currentTime') / AppModel.video.get('duration');
-				var progressBarWidth = pct * seekBarWidth;
-				
-				// Constrain the progess bar so the thumb fits in the seek bar
-				if (progressBarWidth < 4) {
-					progressBarWidth = 4;
-				} else if (progressBarWidth + 4 > seekBarWidth) {
-					progressBarWidth = seekBarWidth - 4;
-				}
-				
-				$('.' + PROGRESS_BAR_CLASS).width(progressBarWidth);
-				$('.' + PROGRESS_THUMB_CLASS).css('left', progressBarWidth - 4);
-				
 				// Update the current time value
 				$('.' + CURRENT_TIME_CLASS).html(AppModel.video.get('formattedTime'));
 			},
@@ -350,6 +296,16 @@ define(
 				
 				view.setElement(controlsEl);
 				view.render();
+				
+				seekBar = new SeekBar();
+				seekBar.setElement($('.' + SEEK_BAR_CLASS));
+				seekBar.render();
+				
+				// Only show supported controls
+				if (Container.supportsPlaybackRate() === false) {
+					$('.' + PLAYBACK_RATE_CONTAINER_CLASS).css('display', 'none');
+					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
+				}
 				
 				return view;
 			}
