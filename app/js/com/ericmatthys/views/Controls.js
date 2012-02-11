@@ -30,6 +30,12 @@ define(
 		var PLAYBACK_RATE_BAR_CLASS = 'emp-playback-rate-bar';
 		var PLAYBACK_RATE_THUMB_CLASS = 'emp-playback-rate-thumb';
 		var PLAYBACK_RATE_DIVIDER_CLASS = 'emp-divider-playback-rate';
+		
+		var FULLSCREEN_WRAPPER_CLASS = 'emp-fullscreen-wrapper';
+		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';
+		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
+		var FULLSCREEN_BUTTON_CLASS = 'emp-fullscreen-button';
+		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
 	
 		var view;
 		var seekBar;
@@ -43,6 +49,7 @@ define(
 			events: {
 				'click .emp-play-pause-button': 'onPlayPauseClick',
 				'click .emp-volume-button': 'onVolumeButtonClick',
+				'click .emp-fullscreen-button': 'onFullscreenButtonClick',
 				'mouseover .emp-volume-container': 'onVolumeContainerMouseOver',
 				'mouseout .emp-volume-container': 'onVolumeContainerMouseOut',
 				'mouseover .emp-playback-rate-container': 'onPlaybackRateContainerMouseOver',
@@ -134,6 +141,36 @@ define(
 					this.mutedVolume = AppModel.video.get('volume');
 					
 					Container.setVolume(0);
+				}
+			},
+			
+			onFullscreenButtonClick: function (event) {
+				// Prevent the click from navigating to a href value
+				event.preventDefault();
+				
+				console.log($(document).height());
+				
+				var wrapperClass = Config.getVideoID() + '-fullscreen-wrapper';
+				
+				// Wrap the controls and video in a div that we can request fullscreen with
+				this.$el.wrap('<div id="' + wrapperClass + '" class="' + FULLSCREEN_WRAPPER_CLASS + '" />');
+				
+				var $video = $('#' + Config.getVideoID());
+				var $wrapperEl = $('#' + wrapperClass);
+				var wrapperEl = $wrapperEl.get(0);
+				
+				$wrapperEl.prepend($video);
+				
+				this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
+				this.$el.css('width', '100%');
+				$video.addClass(FULLSCREEN_VIDEO_CLASS);
+				
+				if (wrapperEl.requestFullScreen) {
+					wrapperEl.requestFullScreen();
+				} else if (wrapperEl.mozRequestFullScreen) {
+					wrapperEl.mozRequestFullScreen();
+				} else if (wrapperEl.webkitRequestFullScreen) {
+					wrapperEl.webkitRequestFullScreen();
 				}
 			},
 			
@@ -229,6 +266,7 @@ define(
 			},
 			
 			onVolumeChange: function () {
+				var $volumeButton = $('.' + VOLUME_BUTTON_CLASS);
 				var volume = AppModel.video.get('volume');
 				var volumeSliderWidth = $('.' + VOLUME_SLIDER_CLASS).width();
 				var volumeBarWidth = volume * volumeSliderWidth;
@@ -247,16 +285,16 @@ define(
 				// Update the volume button
 				if (volume > .5) {
 					this.muted = false;
-					$('.' + VOLUME_BUTTON_CLASS).removeClass(VOLUME_BUTTON_LOW_CLASS);
-					$('.' + VOLUME_BUTTON_CLASS).removeClass(VOLUME_BUTTON_OFF_CLASS);
+					$volumeButton.removeClass(VOLUME_BUTTON_LOW_CLASS);
+					$volumeButton.removeClass(VOLUME_BUTTON_OFF_CLASS);
 				} else if (volume < .5 && volume > 0) {
 					this.muted = false;
-					$('.' + VOLUME_BUTTON_CLASS).addClass(VOLUME_BUTTON_LOW_CLASS);
-					$('.' + VOLUME_BUTTON_CLASS).removeClass(VOLUME_BUTTON_OFF_CLASS);
+					$volumeButton.addClass(VOLUME_BUTTON_LOW_CLASS);
+					$volumeButton.removeClass(VOLUME_BUTTON_OFF_CLASS);
 				} else {
 					this.muted = true;
-					$('.' + VOLUME_BUTTON_CLASS).addClass(VOLUME_BUTTON_OFF_CLASS);
-					$('.' + VOLUME_BUTTON_CLASS).removeClass(VOLUME_BUTTON_LOW_CLASS);
+					$volumeButton.addClass(VOLUME_BUTTON_OFF_CLASS);
+					$volumeButton.removeClass(VOLUME_BUTTON_LOW_CLASS);
 				}
 			},
 			
@@ -297,6 +335,7 @@ define(
 				view.setElement(controlsEl);
 				view.render();
 				
+				// Create the seek bar
 				seekBar = new SeekBar();
 				seekBar.setElement($('.' + SEEK_BAR_CLASS));
 				seekBar.render();
@@ -305,6 +344,11 @@ define(
 				if (Container.supportsPlaybackRate() === false) {
 					$('.' + PLAYBACK_RATE_CONTAINER_CLASS).css('display', 'none');
 					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
+				}
+				
+				if (Container.supportsFullscreen() === false) {
+					$('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
+					$('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
 				}
 				
 				return view;

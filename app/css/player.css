@@ -5,6 +5,16 @@ html {
 
 video { background-color: #000000; }
 
+.emp-fullscreen-wrapper {
+	width: 100%;
+	height: 100%;
+}
+
+video.emp-video-fullscreen {
+	width: 100%;
+	height: 100%;
+}
+
 .emp-controls {
 	height: 38px;
 	border-bottom: 1px solid #000000;
@@ -16,6 +26,11 @@ video { background-color: #000000; }
 	background: -o-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: -ms-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: linear-gradient(top, #000000 0%,#2a2a2a 100%);
+}
+
+.emp-controls-fullscreen {
+	position: absolute;
+	bottom: 0;
 }
 
 .emp-divider-left,

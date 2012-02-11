@@ -33,7 +33,6 @@ define(
 			
 			render: function () {
 				this.$el.html(_.template(template, {}));
-				
 				return this;
 			},
 			
@@ -92,6 +91,7 @@ define(
 			
 			onBufferChange: function () {
 				// Update the buffer bar to reflect the buffered time range
+				var $bufferBar = $('.' + BUFFER_BAR_CLASS);
 				var seekBarWidth = $('.' + SEEK_BAR_CLASS).width();
 				var duration = AppModel.video.get('duration');
 				var startPct = AppModel.video.get('startBuffer') / duration;
@@ -99,8 +99,8 @@ define(
 				var startPosition = startPct * seekBarWidth;
 				var width = endPct * seekBarWidth - startPosition;
 				
-				$('.' + BUFFER_BAR_CLASS).css('left', startPosition);
-				$('.' + BUFFER_BAR_CLASS).width(width);
+				$bufferBar.css('left', startPosition);
+				$bufferBar.width(width);
 			}
 		});
 		

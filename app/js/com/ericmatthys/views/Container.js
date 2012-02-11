@@ -133,6 +133,16 @@ define(
 			
 			supportsPlaybackRate: function () {
 				return (typeof(view.el.playbackRate) !== 'undefined');
+			},
+			
+			supportsFullscreen: function () {
+				if( typeof(document.webkitCancelFullScreen) === 'function' ||
+					typeof(document.mozCancelFullScreen) === 'function' ||
+					typeof(cancelFullScreen) === 'function' ) {
+					return true;	
+				} else {
+					return false;
+				}
 			}
 		}
     }
