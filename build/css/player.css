@@ -3,6 +3,14 @@ html {
 	line-height: 0;
 }
 video { background-color: #000000; }
+.emp-fullscreen-wrapper {
+	width: 100%;
+	height: 100%;
+}
+video.emp-video-fullscreen {
+	width: 100%;
+	height: 100%;
+}
 .emp-controls {
 	height: 38px;
 	border-bottom: 1px solid #000000;
@@ -15,6 +23,10 @@ video { background-color: #000000; }
 	background: -ms-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: linear-gradient(top, #000000 0%,#2a2a2a 100%);
 }
+.emp-controls-fullscreen {
+	position: absolute;
+	bottom: 0;
+}
 .emp-divider-left,
 .emp-divider-right {
 	width: 1px;
@@ -25,8 +37,9 @@ video { background-color: #000000; }
 .emp-divider-left { float: left; }
 .emp-divider-right { float: right; }
 .emp-play-pause-button,
+.emp-volume-button,
 .emp-playback-rate-button,
-.emp-volume-button {
+.emp-fullscreen-button {
 	float: left;
 	display: block;
 	width: 40px;
@@ -47,6 +60,11 @@ video { background-color: #000000; }
 .emp-volume-button-off:hover { background-position: -40px -120px; }
 .emp-playback-rate-button { background: transparent url(../images/icons.png) 0 -150px; }
 .emp-playback-rate-button:hover { background-position: -40px -150px; }
+.emp-fullscreen-button {
+	float: right;
+	background: transparent url(../images/icons.png) 0 -180px;
+}
+.emp-fullscreen-button:hover { background-position: -40px -180px; }
 .emp-volume-container,
 .emp-playback-rate-container {
 	position: relative;

@@ -11,6 +11,8 @@ js/com/ericmatthys/models/AppModel.js
 js/com/ericmatthys/views/Container.js
 js/text.js
 text!templates/controls.html
+text!templates/seekbar.html
+js/com/ericmatthys/views/SeekBar.js
 js/com/ericmatthys/views/Controls.js
 js/com/ericmatthys/App.js
 js/main.js
