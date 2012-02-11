@@ -88,11 +88,24 @@ define(
 						view.el.currentTime = 0;
 					}
 					
+					console.log('play');
 					AppModel.video.set({paused: false});
 					el.play();
-				} else {
+				} else {	
+					console.log('pause');
 					AppModel.video.set({paused: true});
 					el.pause();
+				}
+			},
+			
+			sync: function () {
+				console.log('sync');
+				var el = view.el;
+				var paused = AppModel.video.get('paused');
+				
+				console.log(paused + ' !== ' + el.paused);
+				if (paused !== el.paused) {
+					this.playPause();
 				}
 			},
 			
@@ -117,7 +130,8 @@ define(
 			supportsFullscreen: function () {
 				if( typeof(document.webkitCancelFullScreen) === 'function' ||
 					typeof(document.mozCancelFullScreen) === 'function' ||
-					typeof(cancelFullScreen) === 'function' ) {
+					typeof(document.cancelFullScreen) === 'function' ||
+					typeof(document.exitFullscreen) === 'function' ) {
 					return true;	
 				} else {
 					return false;

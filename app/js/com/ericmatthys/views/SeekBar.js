@@ -33,6 +33,10 @@ define(
 			
 			render: function () {
 				this.$el.html(_.template(template, {}));
+				
+				this.onCurrentTimeChange();
+				this.onBufferChange();
+				
 				return this;
 			},
 			

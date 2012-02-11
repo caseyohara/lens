@@ -163,27 +163,46 @@ define(
 				
 				var $video = $('#' + Config.getVideoID());
 				
-				// Wrap the controls and video in a div that we can request fullscreen with
-				this.$el.wrap(this.make('div', {'class': FULLSCREEN_WRAPPER_CLASS}));
-				
-				var $wrapper = $('.' + FULLSCREEN_WRAPPER_CLASS);
-				var wrapper = $wrapper.get(0);
-				
-				$wrapper.prepend($video);
-				
-				if (wrapper.requestFullScreen) {
-					wrapper.requestFullScreen();
-				} else if (wrapper.mozRequestFullScreen) {
-					wrapper.mozRequestFullScreen();
-				} else if (wrapper.webkitRequestFullScreen) {
-					wrapper.webkitRequestFullScreen();
+				if (document.webkitIsFullScreen === true || 
+					document.mozFullScreen === true || 
+					document.fullScreen === true) {
+					// If we are already in fullscreen, cancel fullscreen
+					if (typeof(document.cancelFullScreen) === 'function') {
+						document.cancelFullScreen();
+					} else if (typeof(document.exitFullscreen) === 'function') {
+						document.exitFullscreen();
+					} else if (typeof(document.mozCancelFullScreen) === 'function') {
+						document.mozCancelFullScreen();
+					} else if (typeof(document.webkitCancelFullScreen) === 'function') {
+						document.webkitCancelFullScreen();
+					}
+				} else {
+					// Wrap the controls and video in a div that we can request fullscreen with
+					this.$el.wrap(this.make('div', {'class': FULLSCREEN_WRAPPER_CLASS}));
+
+					var $wrapper = $('.' + FULLSCREEN_WRAPPER_CLASS);
+					var wrapper = $wrapper.get(0);
+
+					$wrapper.prepend($video);
+
+					if (wrapper.requestFullScreen) {
+						wrapper.requestFullScreen();
+					} else if (wrapper.requestFullscreen) {
+						wrapper.requestFullscreen();
+					} else if (wrapper.mozRequestFullScreen) {
+						wrapper.mozRequestFullScreen();
+					} else if (wrapper.webkitRequestFullScreen) {
+						wrapper.webkitRequestFullScreen();
+					}
 				}
 			},
 			
 			onFullscreenChange: function () {
 				var $video = $('#' + Config.getVideoID());
 				
-				if (document.webkitIsFullScreen === true) {
+				if (document.webkitIsFullScreen === true || 
+					document.mozFullScreen === true || 
+					document.fullScreen === true) {
 					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
 					this.$el.css('width', '100%');
 					$video.addClass(FULLSCREEN_VIDEO_CLASS);
@@ -195,6 +214,12 @@ define(
 					this.$el.css('width', this.controlsWidth);
 					$video.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
+				
+				// Re-render the seekbar since the controls width has changed
+				seekBar.render();
+				
+				// Going fullscreen may pause the video unintentionally
+				Container.sync();
 			},
 			
 			onVolumeContainerMouseOver: function (event) {
