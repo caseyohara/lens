@@ -6,6 +6,7 @@ video { background-color: #000000; }
 .emp-fullscreen-wrapper {
 	width: 100%;
 	height: 100%;
+	background-color: #000000;
 }
 video.emp-video-fullscreen {
 	width: 100%;
