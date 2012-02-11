@@ -10,17 +10,12 @@ define(
 		
 		var Container = Backbone.View.extend({
 			idName: Config.getVideoID(),
-			bufferInterval: null,
 
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',
 				'progress': 'onProgress',
 				'timeupdate': 'onTimeUpdate',
 				'ended': 'onEnded'
-			},
-			
-			initialize: function () {
-				_.bindAll(this, 'onBufferUpdate');
 			},
 			
 			onLoadedMetadata: function () {

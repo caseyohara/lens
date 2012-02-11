@@ -45,6 +45,11 @@ define(
 			model: AppModel.video,
 			muted: false,
 			mutedVolume: 0,
+			controlsWidth: 0,
+			volumeCollapsedWidth: 40,
+			volumeExpandedWidth: 150,
+			playbackRateCollapsedWidth: 40,
+			playbackRateExpandedWidth: 150,
 
 			events: {
 				'click .emp-play-pause-button': 'onPlayPauseClick',
@@ -74,6 +79,14 @@ define(
 				this.model.bind('change:formattedTime', this.onCurrentTimeChange);
 				this.model.bind('change:volume', this.onVolumeChange);
 				this.model.bind('change:playbackRate', this.onPlaybackRateChange);
+				
+				// Conditionally bind to fullscreen events
+				if (Container.supportsFullscreen() === true) {
+					_.bindAll(this, 'onFullscreenChange');
+					
+					$(document).bind('webkitfullscreenchange', this.onFullscreenChange);
+					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
+				}
 			},
 			
 			render: function () {
@@ -148,46 +161,56 @@ define(
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				console.log($(document).height());
-				
-				var wrapperClass = Config.getVideoID() + '-fullscreen-wrapper';
+				var $video = $('#' + Config.getVideoID());
 				
 				// Wrap the controls and video in a div that we can request fullscreen with
-				this.$el.wrap('<div id="' + wrapperClass + '" class="' + FULLSCREEN_WRAPPER_CLASS + '" />');
+				this.$el.wrap(this.make('div', {'class': FULLSCREEN_WRAPPER_CLASS}));
 				
+				var $wrapper = $('.' + FULLSCREEN_WRAPPER_CLASS);
+				var wrapper = $wrapper.get(0);
+				
+				$wrapper.prepend($video);
+				
+				if (wrapper.requestFullScreen) {
+					wrapper.requestFullScreen();
+				} else if (wrapper.mozRequestFullScreen) {
+					wrapper.mozRequestFullScreen();
+				} else if (wrapper.webkitRequestFullScreen) {
+					wrapper.webkitRequestFullScreen();
+				}
+			},
+			
+			onFullscreenChange: function () {
 				var $video = $('#' + Config.getVideoID());
-				var $wrapperEl = $('#' + wrapperClass);
-				var wrapperEl = $wrapperEl.get(0);
 				
-				$wrapperEl.prepend($video);
-				
-				this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
-				this.$el.css('width', '100%');
-				$video.addClass(FULLSCREEN_VIDEO_CLASS);
-				
-				if (wrapperEl.requestFullScreen) {
-					wrapperEl.requestFullScreen();
-				} else if (wrapperEl.mozRequestFullScreen) {
-					wrapperEl.mozRequestFullScreen();
-				} else if (wrapperEl.webkitRequestFullScreen) {
-					wrapperEl.webkitRequestFullScreen();
+				if (document.webkitIsFullScreen === true) {
+					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
+					this.$el.css('width', '100%');
+					$video.addClass(FULLSCREEN_VIDEO_CLASS);
+				} else {
+					// Remove the fullscreen wrapper
+					this.$el.unwrap();
+					
+					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
+					this.$el.css('width', this.controlsWidth);
+					$video.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 			},
 			
 			onVolumeContainerMouseOver: function (event) {
-				$('.' + VOLUME_CONTAINER_CLASS).animate({width: 150});
+				$('.' + VOLUME_CONTAINER_CLASS).animate({width: this.volumeExpandedWidth});
 			},
 			
 			onVolumeContainerMouseOut: function (event) {
-				$('.' + VOLUME_CONTAINER_CLASS).animate({width: 40});
+				$('.' + VOLUME_CONTAINER_CLASS).animate({width: this.volumeCollapsedWidth});
 			},
 			
 			onPlaybackRateContainerMouseOver: function (event) {
-				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: 150});
+				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: this.playbackRateExpandedWidth});
 			},
 			
 			onPlaybackRateContainerMouseOut: function (event) {
-				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: 40});
+				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: this.playbackRateCollapsedWidth});
 			},
 			
 			onVolumeSliderMouseDown: function (event) {
@@ -330,7 +353,9 @@ define(
 				var controlsEl = view.make('div', {'class': view.className});
 				$videoEl.after(controlsEl);
 				
-				$('.' + view.className).width($videoEl.width());
+				view.controlsWidth = $videoEl.width();
+				
+				$('.' + view.className).width(view.controlsWidth);
 				
 				view.setElement(controlsEl);
 				view.render();
