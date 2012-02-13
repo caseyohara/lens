@@ -43,11 +43,6 @@ define(
 			seekBar: null,
 			muted: false,
 			mutedVolume: 0,
-			width: 0,
-			volumeCollapsedWidth: 40,
-			volumeExpandedWidth: 150,
-			playbackRateCollapsedWidth: 40,
-			playbackRateExpandedWidth: 150,
 			showFullscreen: false,
 			showPlaybackRate: false,
 
@@ -230,12 +225,12 @@ define(
 					this.$el.unwrap();
 					
 					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
-					this.$el.css('width', this.width);
+					this.$el.css('width', AppModel.video.get('width'));
 					$video.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 				
 				// Re-render the seekbar since the controls width has changed
-				seekBar.render();
+				this.seekBar.render();
 				
 				// Going fullscreen may pause the video unintentionally
 				this.trigger('sync');
