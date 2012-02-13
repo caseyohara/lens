@@ -36,13 +36,11 @@ define(
 		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
 		var FULLSCREEN_BUTTON_CLASS = 'emp-fullscreen-button';
 		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
-	
-		var view;
-		var seekBar;
 		
 		var Controls = Backbone.View.extend({
 			className: 'emp-controls',
 			model: AppModel.video,
+			seekBar: null,
 			muted: false,
 			mutedVolume: 0,
 			width: 0,
@@ -95,9 +93,8 @@ define(
 				this.$el.width(AppModel.video.get('width'));
 				
 				// Create the seek bar
-				seekBar = new SeekBar();
-				seekBar.setElement($('.' + SEEK_BAR_CLASS));
-				seekBar.render();
+				this.seekBar = new SeekBar();
+				this.seekBar.render();
 				
 				// Conditionally hide controls
 				if (this.showFullscreen === false) {

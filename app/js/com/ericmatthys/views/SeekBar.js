@@ -12,7 +12,7 @@ define(
 		var PROGRESS_THUMB_CLASS = 'emp-progress-thumb';
 		
 		var SeekBar = Backbone.View.extend({
-			className: 'emp-seek-bar',
+			el: '.' + SEEK_BAR_CLASS,
 			model: AppModel.video,
 
 			events: {
