@@ -18,6 +18,7 @@ video.emp-video-fullscreen {
 
 .emp-controls {
 	height: 38px;
+	overflow: hidden;
 	border-bottom: 1px solid #000000;
 	
 	background: #4c4c4c;
@@ -27,6 +28,10 @@ video.emp-video-fullscreen {
 	background: -o-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: -ms-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: linear-gradient(top, #000000 0%,#2a2a2a 100%);
+}
+
+.emp-controls-collapsed {
+	height: 9px;
 }
 
 .emp-controls-fullscreen {

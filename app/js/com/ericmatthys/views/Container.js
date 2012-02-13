@@ -16,6 +16,8 @@ define(
 			},
 			
 			initialize: function () {
+				AppModel.video.set({width: this.$el.width()});
+				
 				// If there is already a duration, manually trigger onLoadedMetadata
 				if (this.el.duration > 0) {
 					this.onLoadedMetadata();

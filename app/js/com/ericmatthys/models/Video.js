@@ -6,6 +6,7 @@ define(
 	function (Backbone) {
 		var Video = Backbone.Model.extend({
 			defaults: {
+				width: 0,
 				currentTime: 0,
 				duration: 0,
 				formattedTime: '0:00',

@@ -1,11 +1,10 @@
 define(
 	[
-		'com/ericmatthys/models/AppModel',
 		'com/ericmatthys/views/Container',
 		'com/ericmatthys/views/Controls'
 	],
 	
-    function (AppModel, Container, Controls) {
+    function (Container, Controls) {
         var container;
         var controls;
         
@@ -14,22 +13,12 @@ define(
 			    container = new Container();
 				
 				controls = new Controls({
+					$video: container.$el,
 					showFullscreen: container.supportsFullscreen(),
 					showPlaybackRate: container.supportsPlaybackRate()
 				});
 				
-				// Create the controls element and insert it into the DOM
-				var controlsEl = controls.make('div', {'class': controls.className});
-				container.$el.after(controlsEl);
-				
-				controls.setElement(controlsEl);
-				
-				// Set the width of the controls to the width of the video
-				controls.width = container.$el.width();
-				controls.$el.width(controls.width);
-				
-				controls.render();
-				
+				// Route control events to the container
 				controls.on('playPause', container.playPause, container);
 				controls.on('sync', container.sync, container);
 				controls.on('seek', container.seek, container);

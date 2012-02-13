@@ -83,20 +83,23 @@ define(
 					$(document).bind('webkitfullscreenchange', this.onFullscreenChange);
 					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
 				}
-			},
-			
-			render: function () {
-				this.$el.html(_.template(template, AppModel.video.toJSON()));
 				
-				this.onVolumeChange();
-				this.onPlaybackRateChange();
+				// Create the controls element and insert it into the DOM
+				var controlsEl = this.make('div', {'class': this.className});
+				options.$video.after(controlsEl);
+				
+				this.setElement(controlsEl);
+				this.render();
+				
+				// Adjust the width of the controls to the width of the video
+				this.$el.width(AppModel.video.get('width'));
 				
 				// Create the seek bar
 				seekBar = new SeekBar();
 				seekBar.setElement($('.' + SEEK_BAR_CLASS));
 				seekBar.render();
 				
-				// Only show supported controls
+				// Conditionally hide controls
 				if (this.showFullscreen === false) {
 					$('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
 					$('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
@@ -106,6 +109,13 @@ define(
 					$('.' + PLAYBACK_RATE_CONTAINER_CLASS).css('display', 'none');
 					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
 				}
+			},
+			
+			render: function () {
+				this.$el.html(_.template(template, AppModel.video.toJSON()));
+				
+				this.onVolumeChange();
+				this.onPlaybackRateChange();
 				
 				return this;
 			},
