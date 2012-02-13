@@ -5,16 +5,21 @@ define(
 	],
 	
     function (Backbone, AppModel) {
-		var view;
-		
 		var Container = Backbone.View.extend({
-			idName: AppModel.config.get('videoID'),
+			el: '#' + AppModel.config.get('videoID'),
 
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',
 				'progress': 'onProgress',
 				'timeupdate': 'onTimeUpdate',
 				'ended': 'onEnded'
+			},
+			
+			initialize: function () {
+				// If there is already a duration, manually trigger onLoadedMetadata
+				if (this.el.duration > 0) {
+					this.onLoadedMetadata();
+				}
 			},
 			
 			onLoadedMetadata: function () {
@@ -60,68 +65,46 @@ define(
 			onEnded: function () {
 				AppModel.video.set({paused: true});
 				this.el.pause();
-			}
-		});
-		
-		return {
-			initialize: function () {
-				view = new Container();
-				view.setElement($('#' + view.idName));
-				
-				if (view.el.duration > 0) {
-					console.log('metadata already loaded');
-					view.onLoadedMetadata();
-				}
-				
-				return view;
 			},
-
+			
 			playPause: function() {
-				var el = view.el;
+				var el = this.el;
 				
 				if (el.paused === true) {
 					// If the video has ended, restart from the beginning
 					if (el.ended === true) {
-						view.el.currentTime = 0;
+						el.currentTime = 0;
 					}
 					
-					console.log('play');
 					AppModel.video.set({paused: false});
 					el.play();
 				} else {	
-					console.log('pause');
 					AppModel.video.set({paused: true});
 					el.pause();
 				}
 			},
 			
 			sync: function () {
-				console.log('sync');
-				var el = view.el;
+				var el = this.el;
 				var paused = AppModel.video.get('paused');
 				
-				console.log(paused + ' !== ' + el.paused);
 				if (paused !== el.paused) {
 					this.playPause();
 				}
 			},
 			
 			seek: function (time) {
-				view.el.currentTime = time;
+				this.el.currentTime = time;
 			},
 			
 			setVolume: function (volume) {
 				AppModel.video.set({volume: volume});
-				view.el.volume = volume;
+				this.el.volume = volume;
 			},
 
 			setPlaybackRate: function (playbackRate) {
 				AppModel.video.set({playbackRate: playbackRate});
-				view.el.playbackRate = playbackRate;
-			},
-			
-			supportsPlaybackRate: function () {
-				return (typeof(view.el.playbackRate) !== 'undefined');
+				this.el.playbackRate = playbackRate;
 			},
 			
 			supportsFullscreen: function () {
@@ -133,7 +116,13 @@ define(
 				} else {
 					return false;
 				}
+			},
+
+			supportsPlaybackRate: function () {
+				return (typeof(this.el.playbackRate) !== 'undefined');
 			}
-		}
+		});
+		
+		return Container;
     }
 );

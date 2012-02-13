@@ -2,11 +2,10 @@ define(
 	[
 		'backbone',
 		'com/ericmatthys/models/AppModel',
-		'com/ericmatthys/views/Container',
 		'text!templates/seekbar.html'
 	],
 	
-    function (Backbone, AppModel, Container, template) {
+    function (Backbone, AppModel, template) {
 		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		var BUFFER_BAR_CLASS = 'emp-buffer-bar';
 		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
@@ -23,12 +22,10 @@ define(
 			initialize: function () {
 				_.bindAll(this, 'onSeekBarMouseMove');
 				_.bindAll(this, 'onSeekBarMouseUp');
-				_.bindAll(this, 'onCurrentTimeChange');
-				_.bindAll(this, 'onBufferChange');
 				
-				this.model.bind('change:formattedTime', this.onCurrentTimeChange);
-				this.model.bind('change:startBuffer', this.onBufferChange);
-				this.model.bind('change:endBuffer', this.onBufferChange);
+				this.model.bind('change:formattedTime', this.onCurrentTimeChange, this);
+				this.model.bind('change:startBuffer', this.onBufferChange, this);
+				this.model.bind('change:endBuffer', this.onBufferChange, this);
 			},
 			
 			render: function () {
@@ -46,7 +43,7 @@ define(
 				var clickPct = clickX / $seekBar.width();
 				var clickTime = clickPct * AppModel.video.get('duration');
 
-				Container.seek(clickTime);
+				this.trigger('seek', clickTime);
 			},
 			
 			onSeekBarMouseDown: function (event) {
