@@ -15,6 +15,8 @@ define(
 		var CURRENT_TIME_CLASS = 'emp-current-time';
 		var DURATION_CLASS = 'emp-duration';
 		
+		var ACTIVE_SLIDER_CLASS = 'emp-active-slider';
+		
 		var VOLUME_CONTAINER_CLASS = 'emp-volume-container';
 		var VOLUME_BUTTON_CLASS = 'emp-volume-button';
 		var VOLUME_BUTTON_LOW_CLASS = 'emp-volume-button-low';
@@ -55,10 +57,6 @@ define(
 				'click .emp-play-pause-button': 'onPlayPauseClick',
 				'click .emp-volume-button': 'onVolumeButtonClick',
 				'click .emp-fullscreen-button': 'onFullscreenButtonClick',
-				'mouseover .emp-volume-container': 'onVolumeContainerMouseOver',
-				'mouseout .emp-volume-container': 'onVolumeContainerMouseOut',
-				'mouseover .emp-playback-rate-container': 'onPlaybackRateContainerMouseOver',
-				'mouseout .emp-playback-rate-container': 'onPlaybackRateContainerMouseOut',
 				'mousedown .emp-volume-slider': 'onVolumeSliderMouseDown',
 				'mousedown .emp-playback-rate-slider': 'onPlaybackRateSliderMouseDown'
 			},
@@ -236,28 +234,14 @@ define(
 				this.trigger('sync');
 			},
 			
-			onVolumeContainerMouseOver: function (event) {
-				$('.' + VOLUME_CONTAINER_CLASS).animate({width: this.volumeExpandedWidth});
-			},
-			
-			onVolumeContainerMouseOut: function (event) {
-				$('.' + VOLUME_CONTAINER_CLASS).animate({width: this.volumeCollapsedWidth});
-			},
-			
-			onPlaybackRateContainerMouseOver: function (event) {
-				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: this.playbackRateExpandedWidth});
-			},
-			
-			onPlaybackRateContainerMouseOut: function (event) {
-				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: this.playbackRateCollapsedWidth});
-			},
-			
 			onVolumeSliderMouseDown: function (event) {
 				// Prevent the click from trying to select
 				event.preventDefault();
 				
 				$(document).bind('mousemove', this.onVolumeSliderMouseMove);
 				$(document).bind('mouseup', this.onVolumeSliderMouseUp);
+				
+				$('.' + VOLUME_CONTAINER_CLASS).addClass(ACTIVE_SLIDER_CLASS);
 					
 				this.setVolume(event.pageX);
 			},
@@ -275,6 +259,8 @@ define(
 
 				$(document).unbind('mousemove', this.onVolumeSliderMouseMove);
 				$(document).unbind('mouseup', this.onVolumeSliderMouseUp);
+				
+				$('.' + VOLUME_CONTAINER_CLASS).removeClass(ACTIVE_SLIDER_CLASS);
 					
 				this.setVolume(event.pageX);
 			},
@@ -285,6 +271,8 @@ define(
 				
 				$(document).bind('mousemove', this.onPlaybackRateSliderMouseMove);
 				$(document).bind('mouseup', this.onPlaybackRateSliderMouseUp);
+				
+				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).addClass(ACTIVE_SLIDER_CLASS);
 					
 				this.setPlaybackRate(event.pageX);
 			},
@@ -302,6 +290,8 @@ define(
 
 				$(document).unbind('mousemove', this.onPlaybackRateSliderMouseMove);
 				$(document).unbind('mouseup', this.onPlaybackRateSliderMouseUp);
+				
+				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).removeClass(ACTIVE_SLIDER_CLASS);
 				
 				this.trigger('setPlaybackRate', 1);
 			},
