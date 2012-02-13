@@ -1,15 +1,14 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/Config',
 		'com/ericmatthys/models/AppModel'
 	],
 	
-    function (Backbone, Config, AppModel) {
+    function (Backbone, AppModel) {
 		var view;
 		
 		var Container = Backbone.View.extend({
-			idName: Config.getVideoID(),
+			idName: AppModel.config.get('videoID'),
 
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',

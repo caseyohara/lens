@@ -1,14 +1,13 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/Config',
 		'com/ericmatthys/models/AppModel',
 		'com/ericmatthys/views/Container',
 		'com/ericmatthys/views/SeekBar',
 		'text!templates/controls.html'
 	],
 	
-    function (Backbone, Config, AppModel, Container, SeekBar, template) {
+    function (Backbone, AppModel, Container, SeekBar, template) {
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
 		var PAUSE_CLASS = 'emp-pause-button';
 		
@@ -161,7 +160,7 @@ define(
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				var $video = $('#' + Config.getVideoID());
+				var $video = $('#' + AppModel.config.get('videoID'));
 				
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
@@ -198,7 +197,7 @@ define(
 			},
 			
 			onFullscreenChange: function () {
-				var $video = $('#' + Config.getVideoID());
+				var $video = $('#' + AppModel.config.get('videoID'));
 				
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
@@ -367,12 +366,10 @@ define(
 		});
 		
 		return {
-			viewConstructor: Controls,
-			
 			initialize: function () {
 				view = new Controls();
 				
-				var $videoEl = $('#' + Config.getVideoID());
+				var $videoEl = $('#' + AppModel.config.get('videoID'));
 				
 				// Create the controls element and insert it into the DOM
 				var controlsEl = view.make('div', {'class': view.className});

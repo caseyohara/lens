@@ -1,13 +1,13 @@
 define(
 	[
-	'com/ericmatthys/models/Video',
-	'com/ericmatthys/models/Playlist'
+	'com/ericmatthys/models/Config',
+	'com/ericmatthys/models/Video'
 	],
 	
-	function (Video, Playlist) {
+	function (Config, Video) {
 		return {
-			video: new Video(),
-			playlist: new Playlist()
+		    config: new Config(),
+			video: new Video()
 		};
 	}
 );
