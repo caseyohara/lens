@@ -77,9 +77,13 @@ define(
 					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
 				}
 				
+				this.create(options.$video);
+			},
+			
+			create: function ($video) {
 				// Create the controls element and insert it into the DOM
 				var controlsEl = this.make('div', {'class': this.className});
-				options.$video.after(controlsEl);
+				$video.after(controlsEl);
 				
 				this.setElement(controlsEl);
 				this.render();
