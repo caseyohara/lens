@@ -64,8 +64,6 @@ define(
 		});
 		
 		return {
-			viewConstructor: Container,
-			
 			initialize: function () {
 				view = new Container();
 				view.setElement($('#' + view.idName));
