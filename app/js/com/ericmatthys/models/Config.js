@@ -6,7 +6,7 @@ define(
 	function (Backbone) {
 		var Config = Backbone.Model.extend({
 			defaults: {
-				videoID: 0,
+				videoID: 'emp-video',
 				autoPlay: false
 			},
 			
