@@ -7,6 +7,9 @@ define(
 	],
 	
     function (Backbone, AppModel, SeekBar, template) {
+		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
+		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
+		
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
 		var PAUSE_CLASS = 'emp-pause-button';
 		
@@ -33,7 +36,6 @@ define(
 		
 		var FULLSCREEN_WRAPPER_CLASS = 'emp-fullscreen-wrapper';
 		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';
-		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
 		var FULLSCREEN_BUTTON_CLASS = 'emp-fullscreen-button';
 		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
 		
@@ -45,6 +47,7 @@ define(
 			mutedVolume: 0,
 			showFullscreen: false,
 			showPlaybackRate: false,
+			hideControlsTimeout: null,
 
 			events: {
 				'click .emp-play-pause-button': 'onPlayPauseClick',
@@ -72,6 +75,9 @@ define(
 				// Conditionally bind to fullscreen events
 				if (this.showFullscreen === true) {
 					_.bindAll(this, 'onFullscreenChange');
+					_.bindAll(this, 'onFullscreenMouseMove');
+					_.bindAll(this, 'onFullscreenShowControls');
+					_.bindAll(this, 'onFullscreenHideControls');
 					
 					$(document).bind('webkitfullscreenchange', this.onFullscreenChange);
 					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
@@ -104,7 +110,7 @@ define(
 				if (this.showPlaybackRate === false) {
 					$('.' + PLAYBACK_RATE_CONTAINER_CLASS).css('display', 'none');
 					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
-				}
+				}	
 			},
 			
 			render: function () {
@@ -221,10 +227,20 @@ define(
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
 					document.fullScreen === true) {
+					$(document).bind('mousemove', this.onFullscreenMouseMove);
+					
+					// Make sure the setTimeout is started
+					this.onFullscreenMouseMove();
+					
 					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
 					this.$el.css('width', '100%');
 					$video.addClass(FULLSCREEN_VIDEO_CLASS);
-				} else {
+				} else {	
+					$(document).unbind('mousemove', this.onFullscreenMouseMove);
+					
+					// Make sure the controls are visible again
+					this.onFullscreenShowControls();
+					
 					// Remove the fullscreen wrapper
 					this.$el.unwrap();
 					
@@ -238,6 +254,22 @@ define(
 				
 				// Going fullscreen may pause the video unintentionally
 				this.trigger('sync');
+			},
+			
+			onFullscreenMouseMove: function() {
+				this.onFullscreenShowControls();
+				
+				// If there is no mouse movement for 3 seconds, hide the controls
+				this.hideControlsTimeout = setTimeout( this.onFullscreenHideControls, 3000 );
+			},
+
+			onFullscreenShowControls: function() {
+				clearTimeout(this.hideControlsTimeout);
+				this.$el.removeClass(COLLAPSED_CONTROLS_CLASS);
+			},
+			
+			onFullscreenHideControls: function() {
+				this.$el.addClass(COLLAPSED_CONTROLS_CLASS);
 			},
 			
 			onVolumeSliderMouseDown: function (event) {
