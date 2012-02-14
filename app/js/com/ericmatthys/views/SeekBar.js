@@ -6,19 +6,23 @@ define(
 	],
 	
     function (Backbone, AppModel, template) {
+		//---------- Constants ----------
 		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		var BUFFER_BAR_CLASS = 'emp-buffer-bar';
 		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
 		var PROGRESS_THUMB_CLASS = 'emp-progress-thumb';
 		
 		var SeekBar = Backbone.View.extend({
+			
+			//---------- Properties ----------
 			el: '.' + SEEK_BAR_CLASS,
 			model: AppModel.video,
 
 			events: {
 				'mousedown': 'onSeekBarMouseDown'
 			},
-
+			
+			//---------- Init ----------
 			initialize: function () {
 				_.bindAll(this, 'onSeekBarMouseMove');
 				_.bindAll(this, 'onSeekBarMouseUp');
@@ -28,6 +32,7 @@ define(
 				this.model.bind('change:endBuffer', this.onBufferChange, this);
 			},
 			
+			//---------- Control ----------
 			render: function () {
 				this.$el.html(_.template(template, {}));
 				
@@ -46,6 +51,7 @@ define(
 				this.trigger('seek', clickTime);
 			},
 			
+			//---------- Listeners ----------
 			onSeekBarMouseDown: function (event) {
 				// Prevent the click from trying to select
 				event.preventDefault();

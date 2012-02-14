@@ -7,6 +7,7 @@ define(
 	],
 	
     function (Backbone, AppModel, SeekBar, template) {
+		//---------- Constants ----------
 		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
 		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
 		
@@ -40,6 +41,8 @@ define(
 		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
 		
 		var Controls = Backbone.View.extend({
+			
+			//---------- Properties ----------
 			className: 'emp-controls',
 			model: AppModel.video,
 			seekBar: null,
@@ -56,7 +59,8 @@ define(
 				'mousedown .emp-volume-slider': 'onVolumeSliderMouseDown',
 				'mousedown .emp-playback-rate-slider': 'onPlaybackRateSliderMouseDown'
 			},
-
+			
+			//---------- Init ----------
 			initialize: function (options) {
 				this.showFullscreen = options.showFullscreen;
 				this.showPlaybackRate = options.showPlaybackRate;
@@ -113,6 +117,7 @@ define(
 				}	
 			},
 			
+			//---------- Control ----------
 			render: function () {
 				this.$el.html(_.template(template, AppModel.video.toJSON()));
 				
@@ -153,6 +158,7 @@ define(
 				this.trigger('setPlaybackRate', clickPlaybackRate);
 			},
 			
+			//---------- Listeners ----------
 			onPlayPauseClick: function (event) {
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
