@@ -24,8 +24,7 @@ define(
 			
 			//---------- Init ----------
 			initialize: function () {
-				_.bindAll(this, 'onSeekBarMouseMove');
-				_.bindAll(this, 'onSeekBarMouseUp');
+				_.bindAll(this, 'onSeekBarMouseMove', 'onSeekBarMouseUp');
 				
 				this.model.bind('change:formattedTime', this.onCurrentTimeChange, this);
 				this.model.bind('change:startBuffer', this.onBufferChange, this);

@@ -63,10 +63,10 @@ define(
 				this.showFullscreen = options.showFullscreen;
 				this.showPlaybackRate = options.showPlaybackRate;
 				
-				_.bindAll(this, 'onVolumeSliderMouseMove');
-				_.bindAll(this, 'onVolumeSliderMouseUp');
-				_.bindAll(this, 'onPlaybackRateSliderMouseMove');
-				_.bindAll(this, 'onPlaybackRateSliderMouseUp');
+				_.bindAll(this, 'onVolumeSliderMouseMove', 
+								'onVolumeSliderMouseUp', 
+								'onPlaybackRateSliderMouseMove', 
+								'onPlaybackRateSliderMouseUp');
 				
 				this.model.bind('change:formattedDuration', this.onDurationChange, this);
 				this.model.bind('change:paused', this.onPausedChange, this);
@@ -76,10 +76,10 @@ define(
 				
 				// Conditionally bind to fullscreen events
 				if (this.showFullscreen === true) {
-					_.bindAll(this, 'onFullscreenChange');
-					_.bindAll(this, 'onFullscreenMouseMove');
-					_.bindAll(this, 'onFullscreenShowControls');
-					_.bindAll(this, 'onFullscreenHideControls');
+					_.bindAll(this, 'onFullscreenChange', 
+									'onFullscreenMouseMove', 
+									'onFullscreenShowControls', 
+									'onFullscreenHideControls');
 					
 					$(document).bind('webkitfullscreenchange', this.onFullscreenChange);
 					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
