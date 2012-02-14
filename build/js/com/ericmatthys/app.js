@@ -1,1 +1,0 @@
-define(["com/ericmatthys/Config","com/ericmatthys/views/Container","com/ericmatthys/views/Controls"],function(a,b,c){return{initialize:function(){b.initialize(),c.initialize()}}})

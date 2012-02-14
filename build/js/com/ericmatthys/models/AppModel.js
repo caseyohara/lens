@@ -1,1 +1,0 @@
-define(["com/ericmatthys/models/Video","com/ericmatthys/models/Playlist"],function(a,b){return{video:new a,playlist:new b}})

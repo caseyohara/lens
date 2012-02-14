@@ -5,22 +5,22 @@
 	<title>RequireJS Example</title>
 	<meta charset="utf-8">
 	
-	<link rel="stylesheet" href="css/player.css" />
+	<link rel="stylesheet" href="css/emplayer.css" />
 	
 	<script type="text/javascript" src="js/libs/zepto-0.8-min.js"></script>
-	<script type="text/javascript" src="js/libs/require-1.0.5-min.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/emplayer.js"></script>
 </head>
 
 <body>
-	<video id="test-video" width="800" height="480" preload="metadata">
+	<video id="test-video" width="800" height="480" preload="auto">
 		<source src="http://media.w3.org/2010/05/sintel/trailer.mp4" />
 		<source src="http://media.w3.org/2010/05/sintel/trailer.webm" />
 	</video>
 	
 	<script type="text/javascript">
 		var empConfig = {
-			videoID: 'test-video'
+			videoID: 'test-video',
+			autoPlay: true
 		}
 	</script>
 </body>
