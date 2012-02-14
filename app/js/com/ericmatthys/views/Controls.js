@@ -119,11 +119,11 @@ define(
 				
 				if (clickPct > 1) {
 					clickPct = 1;
-				} else if (clickPct < .1) {
-					clickPct = .1;
+				} else if (clickPct < .033) {
+					clickPct = .033;
 				}
 				
-				// Adjust to constain between .3 and 3
+				// Adjust to constain between .1 and 3
 				var clickPlaybackRate = clickPct * 3;
 
 				Container.setPlaybackRate(clickPlaybackRate);

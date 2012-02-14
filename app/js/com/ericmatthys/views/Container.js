@@ -14,6 +14,7 @@ define(
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',
 				'progress': 'onProgress',
+				'canplaythrough': 'onCanPlayThrough',
 				'timeupdate': 'onTimeUpdate',
 				'ended': 'onEnded'
 			},
@@ -46,6 +47,15 @@ define(
 							startBuffer: startBuffer,
 							endBuffer: endBuffer
 						});
+					}
+				}
+			},
+			
+			onCanPlayThrough: function () {
+				if (Config.getAutoPlay() === true) {
+					if (this.el.paused === true) {
+						AppModel.video.set({paused: false});
+						this.el.play();
 					}
 				}
 			},
@@ -88,22 +98,18 @@ define(
 						view.el.currentTime = 0;
 					}
 					
-					console.log('play');
 					AppModel.video.set({paused: false});
 					el.play();
 				} else {	
-					console.log('pause');
 					AppModel.video.set({paused: true});
 					el.pause();
 				}
 			},
 			
 			sync: function () {
-				console.log('sync');
 				var el = view.el;
 				var paused = AppModel.video.get('paused');
 				
-				console.log(paused + ' !== ' + el.paused);
 				if (paused !== el.paused) {
 					this.playPause();
 				}
