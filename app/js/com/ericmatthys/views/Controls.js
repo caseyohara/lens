@@ -14,8 +14,6 @@ define(
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
 		var PAUSE_CLASS = 'emp-pause-button';
 		
-		var SEEK_BAR_CLASS = 'emp-seek-bar';
-		
 		var CURRENT_TIME_CLASS = 'emp-current-time';
 		var DURATION_CLASS = 'emp-duration';
 		
