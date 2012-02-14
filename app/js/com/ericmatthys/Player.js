@@ -10,7 +10,7 @@ define(
         
 		return {
 			initialize: function () {
-			    container = new Container();
+				container = new Container();
 				
 				controls = new Controls({
 					$video: container.$el,
