@@ -24,9 +24,11 @@ define(
 				
 				if (typeof(this.el) === 'undefined') {
 					throw('A video tag with the id, ' + PlayerModel.config.get('videoID') + ', was not found.');
-				} else if (this.el.duration > 0) {
+				} else {
 					// If there is already a duration, manually trigger onLoadedMetadata
-					this.onLoadedMetadata();
+					if (this.el.duration > 0) {
+						this.onLoadedMetadata();
+					}
 				}
 			},
 			
@@ -120,11 +122,9 @@ define(
 			},
 			
 			onCanPlayThrough: function () {
-				if (PlayerModel.config.get('autoPlay') === true) {
-					if (this.el.paused === true) {
-						PlayerModel.video.set({paused: false});
-						this.el.play();
-					}
+				if (this.el.autoplay === true) {
+					PlayerModel.video.set({paused: false});
+					this.el.play();
 				}
 			},
 			

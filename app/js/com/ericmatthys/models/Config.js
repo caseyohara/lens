@@ -7,7 +7,9 @@ define(
 		var Config = Backbone.Model.extend({
 			defaults: {
 				videoID: 'emp-video',
-				autoPlay: false
+				showVolume: true,
+				showPlaybackRate: true,
+				showFullscreen: true
 			},
 			
 			initialize: function () {
@@ -19,8 +21,16 @@ define(
 						this.set({ 'videoID': c.videoID });
 					}
         		    
-					if (typeof(c.autoPlay) !== 'undefined') {
-						this.set({ 'autoPlay': c.autoPlay });
+					if (typeof(c.showVolume) !== 'undefined') {
+						this.set({ 'showVolume': c.showVolume });
+					}
+					
+					if (typeof(c.showPlaybackRate) !== 'undefined') {
+						this.set({ 'showPlaybackRate': c.showPlaybackRate });
+					}
+					
+					if (typeof(c.showFullscreen) !== 'undefined') {
+						this.set({ 'showFullscreen': c.showFullscreen });
 					}
         		}
 			}

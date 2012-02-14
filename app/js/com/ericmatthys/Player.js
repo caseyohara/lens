@@ -1,10 +1,11 @@
 define(
 	[
+		'com/ericmatthys/models/PlayerModel',
 		'com/ericmatthys/views/Container',
 		'com/ericmatthys/views/Controls'
 	],
 	
-    function (Container, Controls) {
+    function (PlayerModel, Container, Controls) {
         var container;
         var controls;
         
@@ -14,8 +15,9 @@ define(
 				
 				controls = new Controls({
 					$video: container.$el,
-					showFullscreen: container.supportsFullscreen(),
-					showPlaybackRate: container.supportsPlaybackRate()
+					showVolume: PlayerModel.config.get('showVolume'),
+					showFullscreen: (container.supportsFullscreen() && PlayerModel.config.get('showFullscreen')),
+					showPlaybackRate: (container.supportsPlaybackRate() && PlayerModel.config.get('showPlaybackRate'))
 				});
 				
 				// Route control events to the container

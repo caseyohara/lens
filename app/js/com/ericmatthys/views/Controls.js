@@ -26,6 +26,7 @@ define(
 		var VOLUME_SLIDER_CLASS = 'emp-volume-slider';
 		var VOLUME_BAR_CLASS = 'emp-volume-bar';
 		var VOLUME_THUMB_CLASS = 'emp-volume-thumb';
+		var VOLUME_DIVIDER_CLASS = 'emp-divider-volume';
 		
 		var PLAYBACK_RATE_CONTAINER_CLASS = 'emp-playback-rate-container';
 		var PLAYBACK_RATE_SLIDER_CLASS = 'emp-playback-rate-slider';
@@ -46,6 +47,7 @@ define(
 			seekBar: null,
 			muted: false,
 			mutedVolume: 0,
+			showVolume: false,
 			showFullscreen: false,
 			showPlaybackRate: false,
 			hideControlsTimeout: null,
@@ -60,6 +62,7 @@ define(
 			
 			//---------- Init ----------
 			initialize: function (options) {
+				this.showVolume = options.showVolume;
 				this.showFullscreen = options.showFullscreen;
 				this.showPlaybackRate = options.showPlaybackRate;
 				
@@ -104,6 +107,11 @@ define(
 				this.seekBar.render();
 				
 				// Conditionally hide controls
+				if (this.showVolume === false) {
+					$('.' + VOLUME_CONTAINER_CLASS).css('display', 'none');
+					$('.' + VOLUME_DIVIDER_CLASS).css('display', 'none');
+				}
+				
 				if (this.showFullscreen === false) {
 					$('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
 					$('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
