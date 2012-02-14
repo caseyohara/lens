@@ -1,14 +1,14 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/models/AppModel'
+		'com/ericmatthys/models/PlayerModel'
 	],
 	
-    function (Backbone, AppModel) {
+    function (Backbone, PlayerModel) {
 		var Container = Backbone.View.extend({
 			
 			//---------- Properties ----------
-			el: '#' + AppModel.config.get('videoID'),
+			el: '#' + PlayerModel.config.get('videoID'),
 
 			events: {
 				'loadedmetadata': 'onLoadedMetadata',
@@ -20,7 +20,7 @@ define(
 			
 			//---------- Init ----------
 			initialize: function () {
-				AppModel.video.set({width: this.$el.width()});
+				PlayerModel.video.set({width: this.$el.width()});
 				
 				// If there is already a duration, manually trigger onLoadedMetadata
 				if (this.el.duration > 0) {
@@ -38,17 +38,17 @@ define(
 						el.currentTime = 0;
 					}
 					
-					AppModel.video.set({paused: false});
+					PlayerModel.video.set({paused: false});
 					el.play();
 				} else {	
-					AppModel.video.set({paused: true});
+					PlayerModel.video.set({paused: true});
 					el.pause();
 				}
 			},
 			
 			sync: function () {
 				var el = this.el;
-				var paused = AppModel.video.get('paused');
+				var paused = PlayerModel.video.get('paused');
 				
 				if (paused !== el.paused) {
 					this.playPause();
@@ -60,12 +60,12 @@ define(
 			},
 			
 			setVolume: function (volume) {
-				AppModel.video.set({volume: volume});
+				PlayerModel.video.set({volume: volume});
 				this.el.volume = volume;
 			},
 
 			setPlaybackRate: function (playbackRate) {
-				AppModel.video.set({playbackRate: playbackRate});
+				PlayerModel.video.set({playbackRate: playbackRate});
 				this.el.playbackRate = playbackRate;
 			},
 			
@@ -87,11 +87,11 @@ define(
 			//---------- Listeners ----------
 			onLoadedMetadata: function () {
 				var duration = this.el.duration;
-				var formattedDuration = AppModel.video.secondsToHms(duration);
+				var formattedDuration = PlayerModel.video.secondsToHms(duration);
 				var time = this.el.currentTime;
-				var formattedTime = AppModel.video.secondsToHms(time);
+				var formattedTime = PlayerModel.video.secondsToHms(time);
 				
-				AppModel.video.set({
+				PlayerModel.video.set({
 					duration: duration,
 					formattedDuration: formattedDuration,
 					currentTime: time,
@@ -109,7 +109,7 @@ define(
 						var startBuffer = buffered.start(0);
 						var endBuffer = buffered.end(0);
 					
-						AppModel.video.set({
+						PlayerModel.video.set({
 							startBuffer: startBuffer,
 							endBuffer: endBuffer
 						});
@@ -118,9 +118,9 @@ define(
 			},
 			
 			onCanPlayThrough: function () {
-				if (AppModel.config.get('autoPlay') === true) {
+				if (PlayerModel.config.get('autoPlay') === true) {
 					if (this.el.paused === true) {
-						AppModel.video.set({paused: false});
+						PlayerModel.video.set({paused: false});
 						this.el.play();
 					}
 				}
@@ -128,14 +128,14 @@ define(
 			
 			onTimeUpdate: function () {
 				var time = this.el.currentTime;
-				var formattedTime = AppModel.video.secondsToHms(time);
+				var formattedTime = PlayerModel.video.secondsToHms(time);
 				
-				AppModel.video.set({currentTime: time});
-				AppModel.video.set({formattedTime: formattedTime});
+				PlayerModel.video.set({currentTime: time});
+				PlayerModel.video.set({formattedTime: formattedTime});
 			},
 			
 			onEnded: function () {
-				AppModel.video.set({paused: true});
+				PlayerModel.video.set({paused: true});
 				this.el.pause();
 			}
 		});

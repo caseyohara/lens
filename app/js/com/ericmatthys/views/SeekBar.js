@@ -1,11 +1,11 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/models/AppModel',
+		'com/ericmatthys/models/PlayerModel',
 		'text!templates/seekbar.html'
 	],
 	
-    function (Backbone, AppModel, template) {
+    function (Backbone, PlayerModel, template) {
 		//---------- Constants ----------
 		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		var BUFFER_BAR_CLASS = 'emp-buffer-bar';
@@ -16,7 +16,7 @@ define(
 			
 			//---------- Properties ----------
 			el: '.' + SEEK_BAR_CLASS,
-			model: AppModel.video,
+			model: PlayerModel.video,
 
 			events: {
 				'mousedown': 'onSeekBarMouseDown'
@@ -46,7 +46,7 @@ define(
 				var $seekBar = $('.' + SEEK_BAR_CLASS);
 				var clickX = x - $seekBar.offset().left;
 				var clickPct = clickX / $seekBar.width();
-				var clickTime = clickPct * AppModel.video.get('duration');
+				var clickTime = clickPct * PlayerModel.video.get('duration');
 
 				this.trigger('seek', clickTime);
 			},
@@ -82,7 +82,7 @@ define(
 			onCurrentTimeChange: function () {
 				// Update the progress bar to reflect the current time
 				var seekBarWidth = $('.' + SEEK_BAR_CLASS).width();
-				var pct = AppModel.video.get('currentTime') / AppModel.video.get('duration');
+				var pct = PlayerModel.video.get('currentTime') / PlayerModel.video.get('duration');
 				var progressBarWidth = pct * seekBarWidth;
 				
 				// Constrain the progess bar so the thumb fits in the seek bar
@@ -100,9 +100,9 @@ define(
 				// Update the buffer bar to reflect the buffered time range
 				var $bufferBar = $('.' + BUFFER_BAR_CLASS);
 				var seekBarWidth = $('.' + SEEK_BAR_CLASS).width();
-				var duration = AppModel.video.get('duration');
-				var startPct = AppModel.video.get('startBuffer') / duration;
-				var endPct = AppModel.video.get('endBuffer') / duration;
+				var duration = PlayerModel.video.get('duration');
+				var startPct = PlayerModel.video.get('startBuffer') / duration;
+				var endPct = PlayerModel.video.get('endBuffer') / duration;
 				var startPosition = startPct * seekBarWidth;
 				var width = endPct * seekBarWidth - startPosition;
 				

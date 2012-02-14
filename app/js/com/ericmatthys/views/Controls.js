@@ -1,12 +1,12 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/models/AppModel',
+		'com/ericmatthys/models/PlayerModel',
 		'com/ericmatthys/views/SeekBar',
 		'text!templates/controls.html'
 	],
 	
-    function (Backbone, AppModel, SeekBar, template) {
+    function (Backbone, PlayerModel, SeekBar, template) {
 		//---------- Constants ----------
 		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
 		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
@@ -44,7 +44,7 @@ define(
 			
 			//---------- Properties ----------
 			className: 'emp-controls',
-			model: AppModel.video,
+			model: PlayerModel.video,
 			seekBar: null,
 			muted: false,
 			mutedVolume: 0,
@@ -99,7 +99,7 @@ define(
 				this.render();
 				
 				// Adjust the width of the controls to the width of the video
-				this.$el.width(AppModel.video.get('width'));
+				this.$el.width(PlayerModel.video.get('width'));
 				
 				// Create the seek bar
 				this.seekBar = new SeekBar();
@@ -119,7 +119,7 @@ define(
 			
 			//---------- Control ----------
 			render: function () {
-				this.$el.html(_.template(template, AppModel.video.toJSON()));
+				this.$el.html(_.template(template, PlayerModel.video.toJSON()));
 				
 				this.onVolumeChange();
 				this.onPlaybackRateChange();
@@ -181,7 +181,7 @@ define(
 					this.mutedVolume = 0;
 				} else {
 					this.muted = true;
-					this.mutedVolume = AppModel.video.get('volume');
+					this.mutedVolume = PlayerModel.video.get('volume');
 					
 					this.trigger('setVolume', 0);
 				}
@@ -191,7 +191,7 @@ define(
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				var $video = $('#' + AppModel.config.get('videoID'));
+				var $video = $('#' + PlayerModel.config.get('videoID'));
 				
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
@@ -228,7 +228,7 @@ define(
 			},
 			
 			onFullscreenChange: function () {
-				var $video = $('#' + AppModel.config.get('videoID'));
+				var $video = $('#' + PlayerModel.config.get('videoID'));
 				
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
@@ -251,7 +251,7 @@ define(
 					this.$el.unwrap();
 					
 					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
-					this.$el.css('width', AppModel.video.get('width'));
+					this.$el.css('width', PlayerModel.video.get('width'));
 					$video.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 				
@@ -342,7 +342,7 @@ define(
 			
 			onPausedChange: function () {
 				// Update the play/pause button
-				var paused = AppModel.video.get('paused');
+				var paused = PlayerModel.video.get('paused');
 				
 				if (paused) {
 					$('.' + PLAY_PAUSE_CLASS).removeClass(PAUSE_CLASS);
@@ -353,17 +353,17 @@ define(
 			
 			onCurrentTimeChange: function () {
 				// Update the current time value
-				$('.' + CURRENT_TIME_CLASS).html(AppModel.video.get('formattedTime'));
+				$('.' + CURRENT_TIME_CLASS).html(PlayerModel.video.get('formattedTime'));
 			},
 			
 			onDurationChange: function () {
 				// Update the duration value
-				$('.' + DURATION_CLASS).html(AppModel.video.get('formattedDuration'));
+				$('.' + DURATION_CLASS).html(PlayerModel.video.get('formattedDuration'));
 			},
 			
 			onVolumeChange: function () {
 				var $volumeButton = $('.' + VOLUME_BUTTON_CLASS);
-				var volume = AppModel.video.get('volume');
+				var volume = PlayerModel.video.get('volume');
 				var volumeSliderWidth = $('.' + VOLUME_SLIDER_CLASS).width();
 				var volumeBarWidth = volume * volumeSliderWidth;
 				
@@ -395,7 +395,7 @@ define(
 			},
 			
 			onPlaybackRateChange: function () {
-				var playbackRate = AppModel.video.get('playbackRate');
+				var playbackRate = PlayerModel.video.get('playbackRate');
 				var playbackRateSliderWidth = $('.' + PLAYBACK_RATE_SLIDER_CLASS).width();
 				
 				// Re-adjust playbackRate to be a percentage
