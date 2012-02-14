@@ -15,10 +15,13 @@ define(
         		if (typeof(window.empConfig) !== 'undefined') {
         		    var c = window.empConfig;
         		    
-        		    this.set({
-        		        'videoID': c.videoID,
-        		        'autoPlay': c.autoPlay
-        		    });
+					if (typeof(c.videoID) !== 'undefined') {
+						this.set({ 'videoID': c.videoID });
+					}
+        		    
+					if (typeof(c.autoPlay) !== 'undefined') {
+						this.set({ 'autoPlay': c.autoPlay });
+					}
         		}
 			}
 		});
