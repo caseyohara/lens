@@ -17,6 +17,7 @@ video.emp-video-fullscreen {
 
 .emp-controls {
 	height: 38px;
+	overflow: hidden;
 	border-bottom: 1px solid #000000;
 	
 	background: #4c4c4c;
@@ -26,6 +27,16 @@ video.emp-video-fullscreen {
 	background: -o-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: -ms-linear-gradient(top, #000000 0%,#2a2a2a 100%);
 	background: linear-gradient(top, #000000 0%,#2a2a2a 100%);
+	
+	-webkit-transition: height .3s ease-in-out;
+	-moz-transition: height .3s ease-in-out;
+	-o-transition: height .3s ease-in-out;
+	-ms-transition: height .3s ease-in-out;
+	transition: height .3s ease-in-out;
+}
+
+.emp-controls-collapsed {
+	height: 9px;
 }
 
 .emp-controls-fullscreen {
@@ -86,10 +97,22 @@ video.emp-video-fullscreen {
 	width: 40px;
 	height: 30px;
 	overflow: hidden;
+	
+	-webkit-transition: width .3s ease-in-out;
+	-moz-transition: width .3s ease-in-out;
+	-o-transition: width .3s ease-in-out;
+	-ms-transition: width .3s ease-in-out;
+	transition: width .3s ease-in-out;
 }
 
 .emp-volume-container { float: right; }
 .emp-playback-rate-container { float: left; }
+
+.emp-volume-container:hover,
+.emp-playback-rate-container:hover,
+.emp-active-slider {
+	width: 150px;
+}
 
 .emp-seek-bar,
 .emp-volume-slider,

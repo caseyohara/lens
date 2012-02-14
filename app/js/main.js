@@ -11,10 +11,10 @@ require.config({
 
 require(
 	[
-	'com/ericmatthys/App'
+	'com/ericmatthys/Player'
 	],
 	
-	function (App) {
-		App.initialize();
+	function (Player) {
+		Player.initialize();
 	}
 );

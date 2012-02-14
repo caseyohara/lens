@@ -2,35 +2,37 @@ define(
 	[
 		'backbone',
 		'com/ericmatthys/models/AppModel',
-		'com/ericmatthys/views/Container',
 		'text!templates/seekbar.html'
 	],
 	
-    function (Backbone, AppModel, Container, template) {
+    function (Backbone, AppModel, template) {
+		//---------- Constants ----------
 		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		var BUFFER_BAR_CLASS = 'emp-buffer-bar';
 		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
 		var PROGRESS_THUMB_CLASS = 'emp-progress-thumb';
 		
 		var SeekBar = Backbone.View.extend({
-			className: 'emp-seek-bar',
+			
+			//---------- Properties ----------
+			el: '.' + SEEK_BAR_CLASS,
 			model: AppModel.video,
 
 			events: {
 				'mousedown': 'onSeekBarMouseDown'
 			},
-
+			
+			//---------- Init ----------
 			initialize: function () {
 				_.bindAll(this, 'onSeekBarMouseMove');
 				_.bindAll(this, 'onSeekBarMouseUp');
-				_.bindAll(this, 'onCurrentTimeChange');
-				_.bindAll(this, 'onBufferChange');
 				
-				this.model.bind('change:formattedTime', this.onCurrentTimeChange);
-				this.model.bind('change:startBuffer', this.onBufferChange);
-				this.model.bind('change:endBuffer', this.onBufferChange);
+				this.model.bind('change:formattedTime', this.onCurrentTimeChange, this);
+				this.model.bind('change:startBuffer', this.onBufferChange, this);
+				this.model.bind('change:endBuffer', this.onBufferChange, this);
 			},
 			
+			//---------- Control ----------
 			render: function () {
 				this.$el.html(_.template(template, {}));
 				
@@ -46,9 +48,10 @@ define(
 				var clickPct = clickX / $seekBar.width();
 				var clickTime = clickPct * AppModel.video.get('duration');
 
-				Container.seek(clickTime);
+				this.trigger('seek', clickTime);
 			},
 			
+			//---------- Listeners ----------
 			onSeekBarMouseDown: function (event) {
 				// Prevent the click from trying to select
 				event.preventDefault();

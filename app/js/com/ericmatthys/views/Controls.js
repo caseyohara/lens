@@ -1,14 +1,16 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/Config',
 		'com/ericmatthys/models/AppModel',
-		'com/ericmatthys/views/Container',
 		'com/ericmatthys/views/SeekBar',
 		'text!templates/controls.html'
 	],
 	
-    function (Backbone, Config, AppModel, Container, SeekBar, template) {
+    function (Backbone, AppModel, SeekBar, template) {
+		//---------- Constants ----------
+		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
+		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
+		
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
 		var PAUSE_CLASS = 'emp-pause-button';
 		
@@ -16,6 +18,8 @@ define(
 		
 		var CURRENT_TIME_CLASS = 'emp-current-time';
 		var DURATION_CLASS = 'emp-duration';
+		
+		var ACTIVE_SLIDER_CLASS = 'emp-active-slider';
 		
 		var VOLUME_CONTAINER_CLASS = 'emp-volume-container';
 		var VOLUME_BUTTON_CLASS = 'emp-volume-button';
@@ -33,62 +37,87 @@ define(
 		
 		var FULLSCREEN_WRAPPER_CLASS = 'emp-fullscreen-wrapper';
 		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';
-		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
 		var FULLSCREEN_BUTTON_CLASS = 'emp-fullscreen-button';
 		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
-	
-		var view;
-		var seekBar;
 		
 		var Controls = Backbone.View.extend({
+			
+			//---------- Properties ----------
 			className: 'emp-controls',
 			model: AppModel.video,
+			seekBar: null,
 			muted: false,
 			mutedVolume: 0,
-			controlsWidth: 0,
-			volumeCollapsedWidth: 40,
-			volumeExpandedWidth: 150,
-			playbackRateCollapsedWidth: 40,
-			playbackRateExpandedWidth: 150,
+			showFullscreen: false,
+			showPlaybackRate: false,
+			hideControlsTimeout: null,
 
 			events: {
 				'click .emp-play-pause-button': 'onPlayPauseClick',
 				'click .emp-volume-button': 'onVolumeButtonClick',
 				'click .emp-fullscreen-button': 'onFullscreenButtonClick',
-				'mouseover .emp-volume-container': 'onVolumeContainerMouseOver',
-				'mouseout .emp-volume-container': 'onVolumeContainerMouseOut',
-				'mouseover .emp-playback-rate-container': 'onPlaybackRateContainerMouseOver',
-				'mouseout .emp-playback-rate-container': 'onPlaybackRateContainerMouseOut',
 				'mousedown .emp-volume-slider': 'onVolumeSliderMouseDown',
 				'mousedown .emp-playback-rate-slider': 'onPlaybackRateSliderMouseDown'
 			},
-
-			initialize: function () {
+			
+			//---------- Init ----------
+			initialize: function (options) {
+				this.showFullscreen = options.showFullscreen;
+				this.showPlaybackRate = options.showPlaybackRate;
+				
 				_.bindAll(this, 'onVolumeSliderMouseMove');
 				_.bindAll(this, 'onVolumeSliderMouseUp');
 				_.bindAll(this, 'onPlaybackRateSliderMouseMove');
 				_.bindAll(this, 'onPlaybackRateSliderMouseUp');
-				_.bindAll(this, 'onDurationChange');
-				_.bindAll(this, 'onPausedChange');
-				_.bindAll(this, 'onCurrentTimeChange');
-				_.bindAll(this, 'onVolumeChange');
-				_.bindAll(this, 'onPlaybackRateChange');
 				
-				this.model.bind('change:formattedDuration', this.onDurationChange);
-				this.model.bind('change:paused', this.onPausedChange);
-				this.model.bind('change:formattedTime', this.onCurrentTimeChange);
-				this.model.bind('change:volume', this.onVolumeChange);
-				this.model.bind('change:playbackRate', this.onPlaybackRateChange);
+				this.model.bind('change:formattedDuration', this.onDurationChange, this);
+				this.model.bind('change:paused', this.onPausedChange, this);
+				this.model.bind('change:formattedTime', this.onCurrentTimeChange, this);
+				this.model.bind('change:volume', this.onVolumeChange, this);
+				this.model.bind('change:playbackRate', this.onPlaybackRateChange, this);
 				
 				// Conditionally bind to fullscreen events
-				if (Container.supportsFullscreen() === true) {
+				if (this.showFullscreen === true) {
 					_.bindAll(this, 'onFullscreenChange');
+					_.bindAll(this, 'onFullscreenMouseMove');
+					_.bindAll(this, 'onFullscreenShowControls');
+					_.bindAll(this, 'onFullscreenHideControls');
 					
 					$(document).bind('webkitfullscreenchange', this.onFullscreenChange);
 					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
 				}
+				
+				this.create(options.$video);
 			},
 			
+			create: function ($video) {
+				// Create the controls element and insert it into the DOM
+				var controlsEl = this.make('div', {'class': this.className});
+				$video.after(controlsEl);
+				
+				this.setElement(controlsEl);
+				this.render();
+				
+				// Adjust the width of the controls to the width of the video
+				this.$el.width(AppModel.video.get('width'));
+				
+				// Create the seek bar
+				this.seekBar = new SeekBar();
+				this.seekBar.render();
+				
+				// Conditionally hide controls
+				if (this.showFullscreen === false) {
+					$('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
+					$('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
+				}
+				
+				if (this.showPlaybackRate === false) {
+					$('.' + PLAYBACK_RATE_CONTAINER_CLASS).css('display', 'none');
+					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
+				}	
+			},
+			
+			//---------- Control ----------
 			render: function () {
 				this.$el.html(_.template(template, AppModel.video.toJSON()));
 				
@@ -108,8 +137,8 @@ define(
 				} else if (clickPct < 0) {
 					clickPct = 0;
 				}
-
-				Container.setVolume(clickPct);
+				
+				this.trigger('setVolume', clickPct);
 			},
 			
 			setPlaybackRate: function (x) {
@@ -125,15 +154,16 @@ define(
 				
 				// Adjust to constain between .1 and 3
 				var clickPlaybackRate = clickPct * 3;
-
-				Container.setPlaybackRate(clickPlaybackRate);
+				
+				this.trigger('setPlaybackRate', clickPlaybackRate);
 			},
 			
+			//---------- Listeners ----------
 			onPlayPauseClick: function (event) {
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				Container.playPause();
+				this.trigger('playPause');
 			},
 			
 			onVolumeButtonClick: function (event) {
@@ -142,9 +172,9 @@ define(
 				
 				if (this.muted === true) {
 					if (this.mutedVolume > 0) {
-						Container.setVolume(this.mutedVolume);
+						this.trigger('setVolume', this.mutedVolume);
 					} else {
-						Container.setVolume(1);
+						this.trigger('setVolume', 1);
 					}
 					
 					this.muted = false;
@@ -153,7 +183,7 @@ define(
 					this.muted = true;
 					this.mutedVolume = AppModel.video.get('volume');
 					
-					Container.setVolume(0);
+					this.trigger('setVolume', 0);
 				}
 			},
 			
@@ -161,7 +191,7 @@ define(
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				var $video = $('#' + Config.getVideoID());
+				var $video = $('#' + AppModel.config.get('videoID'));
 				
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
@@ -198,44 +228,54 @@ define(
 			},
 			
 			onFullscreenChange: function () {
-				var $video = $('#' + Config.getVideoID());
+				var $video = $('#' + AppModel.config.get('videoID'));
 				
 				if (document.webkitIsFullScreen === true || 
 					document.mozFullScreen === true || 
 					document.fullScreen === true) {
+					$(document).bind('mousemove', this.onFullscreenMouseMove);
+					
+					// Make sure the setTimeout is started
+					this.onFullscreenMouseMove();
+					
 					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
 					this.$el.css('width', '100%');
 					$video.addClass(FULLSCREEN_VIDEO_CLASS);
-				} else {
+				} else {	
+					$(document).unbind('mousemove', this.onFullscreenMouseMove);
+					
+					// Make sure the controls are visible again
+					this.onFullscreenShowControls();
+					
 					// Remove the fullscreen wrapper
 					this.$el.unwrap();
 					
 					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
-					this.$el.css('width', this.controlsWidth);
+					this.$el.css('width', AppModel.video.get('width'));
 					$video.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 				
 				// Re-render the seekbar since the controls width has changed
-				seekBar.render();
+				this.seekBar.render();
 				
 				// Going fullscreen may pause the video unintentionally
-				Container.sync();
+				this.trigger('sync');
 			},
 			
-			onVolumeContainerMouseOver: function (event) {
-				$('.' + VOLUME_CONTAINER_CLASS).animate({width: this.volumeExpandedWidth});
+			onFullscreenMouseMove: function() {
+				this.onFullscreenShowControls();
+				
+				// If there is no mouse movement for 3 seconds, hide the controls
+				this.hideControlsTimeout = setTimeout( this.onFullscreenHideControls, 3000 );
+			},
+
+			onFullscreenShowControls: function() {
+				clearTimeout(this.hideControlsTimeout);
+				this.$el.removeClass(COLLAPSED_CONTROLS_CLASS);
 			},
 			
-			onVolumeContainerMouseOut: function (event) {
-				$('.' + VOLUME_CONTAINER_CLASS).animate({width: this.volumeCollapsedWidth});
-			},
-			
-			onPlaybackRateContainerMouseOver: function (event) {
-				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: this.playbackRateExpandedWidth});
-			},
-			
-			onPlaybackRateContainerMouseOut: function (event) {
-				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).animate({width: this.playbackRateCollapsedWidth});
+			onFullscreenHideControls: function() {
+				this.$el.addClass(COLLAPSED_CONTROLS_CLASS);
 			},
 			
 			onVolumeSliderMouseDown: function (event) {
@@ -244,6 +284,8 @@ define(
 				
 				$(document).bind('mousemove', this.onVolumeSliderMouseMove);
 				$(document).bind('mouseup', this.onVolumeSliderMouseUp);
+				
+				$('.' + VOLUME_CONTAINER_CLASS).addClass(ACTIVE_SLIDER_CLASS);
 					
 				this.setVolume(event.pageX);
 			},
@@ -261,6 +303,8 @@ define(
 
 				$(document).unbind('mousemove', this.onVolumeSliderMouseMove);
 				$(document).unbind('mouseup', this.onVolumeSliderMouseUp);
+				
+				$('.' + VOLUME_CONTAINER_CLASS).removeClass(ACTIVE_SLIDER_CLASS);
 					
 				this.setVolume(event.pageX);
 			},
@@ -271,6 +315,8 @@ define(
 				
 				$(document).bind('mousemove', this.onPlaybackRateSliderMouseMove);
 				$(document).bind('mouseup', this.onPlaybackRateSliderMouseUp);
+				
+				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).addClass(ACTIVE_SLIDER_CLASS);
 					
 				this.setPlaybackRate(event.pageX);
 			},
@@ -289,7 +335,9 @@ define(
 				$(document).unbind('mousemove', this.onPlaybackRateSliderMouseMove);
 				$(document).unbind('mouseup', this.onPlaybackRateSliderMouseUp);
 				
-				Container.setPlaybackRate(1);
+				$('.' + PLAYBACK_RATE_CONTAINER_CLASS).removeClass(ACTIVE_SLIDER_CLASS);
+				
+				this.trigger('setPlaybackRate', 1);
 			},
 			
 			onPausedChange: function () {
@@ -366,43 +414,6 @@ define(
 			}
 		});
 		
-		return {
-			viewConstructor: Controls,
-			
-			initialize: function () {
-				view = new Controls();
-				
-				var $videoEl = $('#' + Config.getVideoID());
-				
-				// Create the controls element and insert it into the DOM
-				var controlsEl = view.make('div', {'class': view.className});
-				$videoEl.after(controlsEl);
-				
-				view.controlsWidth = $videoEl.width();
-				
-				$('.' + view.className).width(view.controlsWidth);
-				
-				view.setElement(controlsEl);
-				view.render();
-				
-				// Create the seek bar
-				seekBar = new SeekBar();
-				seekBar.setElement($('.' + SEEK_BAR_CLASS));
-				seekBar.render();
-				
-				// Only show supported controls
-				if (Container.supportsPlaybackRate() === false) {
-					$('.' + PLAYBACK_RATE_CONTAINER_CLASS).css('display', 'none');
-					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
-				}
-				
-				if (Container.supportsFullscreen() === false) {
-					$('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
-					$('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
-				}
-				
-				return view;
-			}
-		};
+		return Controls;
     }
 );
