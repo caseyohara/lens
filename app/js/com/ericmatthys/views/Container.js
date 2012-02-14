@@ -22,8 +22,10 @@ define(
 			initialize: function () {
 				PlayerModel.video.set({width: this.$el.width()});
 				
-				// If there is already a duration, manually trigger onLoadedMetadata
-				if (this.el.duration > 0) {
+				if (typeof(this.el) === 'undefined') {
+					throw('A video tag with the id, ' + PlayerModel.config.get('videoID') + ', was not found.');
+				} else if (this.el.duration > 0) {
+					// If there is already a duration, manually trigger onLoadedMetadata
 					this.onLoadedMetadata();
 				}
 			},
