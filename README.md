@@ -6,7 +6,7 @@ Lens provides the base architecture for an HTML5 video player that can be easily
 
 Either jQuery or Zepto must be used alongside Lens. The video wrapper and controls will be injected around the video tag with the correct element id. The default element id is *lens-video*.
 
-In order to reduce HTTP requests and for ease of use, Underscore, Backbone, and RequireJS are packaged into the lens.js script.
+For ease of use and to reduce HTTP requests, Underscore, Backbone, and RequireJS are packaged into the lens.js script.
 
 ``` html
 <video id="lens-video" width="800" height="480" poster="http://media.w3.org/2010/05/sintel/poster.png">
