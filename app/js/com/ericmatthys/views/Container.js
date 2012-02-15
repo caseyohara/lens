@@ -121,8 +121,8 @@ define(
 					this.wrapper.webkitRequestFullScreen();
 				} else {
 					// Default back to the normal width if a function is not available
-					//this.$wrapper.css('width', PlayerModel.video.get('width'));
-					//this.$el.removeClass(FULLSCREEN_VIDEO_CLASS);
+					this.$wrapper.css('width', PlayerModel.video.get('width'));
+					this.$el.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 			},
 			

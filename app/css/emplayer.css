@@ -1,8 +1,3 @@
-body {
-	margin: 0;
-	padding: 0;
-}
-
 .emp-player-wrapper {
 	position: relative;
 	margin: 0;
@@ -59,8 +54,7 @@ video.emp-video-fullscreen {
 .emp-divider-right { float: right; }
 
 .emp-play-pause-button,
-.emp-volume-button,
-.emp-playback-rate-button,
+.emp-slider-button,
 .emp-fullscreen-button {
 	float: left;
 	display: block;
@@ -86,16 +80,26 @@ video.emp-video-fullscreen {
 
 .emp-playback-rate-button { background: transparent url(../images/icons.png) 0 -150px; }
 .emp-playback-rate-button:hover { background-position: -40px -150px; }
+.emp-playback-rate:hover .emp-playback-rate-button-point1x { background-position: 0 -180px; }
+.emp-playback-rate-button-point1x:hover { background-position: -40px -180px; }
+.emp-playback-rate:hover .emp-playback-rate-button-point5x { background-position: 0 -210px; }
+.emp-playback-rate-button-point5x:hover { background-position: -40px -210px; }
+.emp-playback-rate:hover .emp-playback-rate-button-1x { background-position: 0 -240px; }
+.emp-playback-rate-button-1x:hover { background-position: -40px -240px; }
+.emp-playback-rate:hover .emp-playback-rate-button-2x { background-position: 0 -270px; }
+.emp-playback-rate-button-2x:hover { background-position: -40px -270px; }
+.emp-playback-rate:hover .emp-playback-rate-button-3x { background-position: 0 -300px; }
+.emp-playback-rate-button-3x:hover { background-position: -40px -300px; }
 
 .emp-fullscreen-button {
 	float: right;
-	background: transparent url(../images/icons.png) 0 -180px;
+	background: transparent url(../images/icons.png) 0 -330px;
 }
 
-.emp-fullscreen-button:hover { background-position: -40px -180px; }
+.emp-fullscreen-button:hover { background-position: -40px -330px; }
 
-.emp-volume-container,
-.emp-playback-rate-container {
+.emp-volume,
+.emp-playback-rate {
 	position: relative;
 	width: 40px;
 	height: 30px;
@@ -108,18 +112,27 @@ video.emp-video-fullscreen {
 	transition: width .3s ease-in-out;
 }
 
-.emp-volume-container { float: right; }
-.emp-playback-rate-container { float: left; }
+.emp-volume { float: right; }
+.emp-playback-rate { float: left; }
 
-.emp-volume-container:hover,
-.emp-playback-rate-container:hover,
+.emp-volume:hover,
+.emp-playback-rate:hover,
 .emp-active-slider {
 	width: 150px;
 }
 
-.emp-seek-bar,
-.emp-volume-slider,
-.emp-playback-rate-slider {
+.emp-progress-bar,
+.emp-progress-thumb,
+.emp-active-slider .emp-slider-bar,
+.emp-active-slider .emp-slider-thumb {
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
+	-o-transition: none !important;
+	-ms-transition: none !important;
+	transition: none !important;
+}
+
+.emp-slider-track {
 	cursor: pointer !important;
 	position: relative;
 	width: 100%;
@@ -136,8 +149,8 @@ video.emp-video-fullscreen {
 	background: linear-gradient(top, #2a2a2a 0%,#1a1a1a 50%,#000000 51%,#131313 100%);
 }
 
-.emp-volume-slider,
-.emp-playback-rate-slider {
+.emp-volume-track,
+.emp-playback-rate-track {
 	position: absolute;
 	top: 0;
 	width: 100px;
@@ -147,19 +160,17 @@ video.emp-video-fullscreen {
 	border-radius: 4px;
 }
 
-.emp-volume-slider {
+.emp-volume-track {
 	right: 40px;
 	margin-left: 10px;
 }
 
-.emp-playback-rate-slider {
+.emp-playback-rate-track {
 	left: 40px;
 	margin-right: 10px;
 }
 
-.emp-progress-bar,
-.emp-volume-bar,
-.emp-playback-rate-bar {
+.emp-slider-bar {
 	cursor: pointer !important;
 	width: 4px;
 	height: 8px;
@@ -171,6 +182,12 @@ video.emp-video-fullscreen {
 	background: -o-linear-gradient(top, #2e7ac7 0%,#2970b8 50%,#225e9b 51%,#2465a8 100%);
 	background: -ms-linear-gradient(top, #2e7ac7 0%,#2970b8 50%,#225e9b 51%,#2465a8 100%);
 	background: linear-gradient(top, #2e7ac7 0%,#2970b8 50%,#225e9b 51%,#2465a8 100%);
+	
+	-webkit-transition: width .1s ease-in-out;
+	-moz-transition: width .1s ease-in-out;
+	-o-transition: width .1s ease-in-out;
+	-ms-transition: width .1s ease-in-out;
+	transition: width .1s ease-in-out;
 }
 
 .emp-progress-bar {
@@ -211,9 +228,7 @@ video.emp-video-fullscreen {
 	border-bottom-left-radius: 4px;
 }
 
-.emp-progress-thumb,
-.emp-volume-thumb,
-.emp-playback-rate-thumb {
+.emp-slider-thumb {
 	cursor: pointer !important;
 	position: absolute;
 	left: 0;
@@ -237,6 +252,12 @@ video.emp-video-fullscreen {
 	-moz-box-shadow: 0 1px 1px #000;
 	-webkit-box-shadow: 0 1px 1px #000;
 	box-shadow: 0 1px 1px #000;
+	
+	-webkit-transition: left .1s ease-in-out;
+	-moz-transition: left .1s ease-in-out;
+	-o-transition: left .1s ease-in-out;
+	-ms-transition: left .1s ease-in-out;
+	transition: left .1s ease-in-out;
 }
 
 .emp-seek-bar:hover .emp-progress-thumb,
