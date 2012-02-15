@@ -1,6 +1,6 @@
 # Lens -- HTML5 video using Backbone and RequireJS
 
-Lens provides the base architecture for an HTML5 video player that can be easily skinned.
+Lens provides the base architecture for an HTML5 video player that can be easily maintained and skinned.
 
 # Usage
 
