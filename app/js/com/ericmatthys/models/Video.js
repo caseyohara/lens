@@ -15,7 +15,8 @@ define(
 				playbackRate: 1,
 				paused: true,
 				startBuffer: 0,
-				endBuffer: 0
+				endBuffer: 0,
+				fullscreen: false
 			},
 			
 			secondsToHms: function (seconds) {
@@ -24,6 +25,12 @@ define(
 				var m = Math.floor(seconds % 3600 / 60);
 				var s = Math.floor(seconds % 3600 % 60);
 				return ((h > 0 ? h + ':' : '') + (m > 0 ? (h > 0 && m < 10 ? '0' : '') + m + ':' : '0:') + (s < 10 ? '0' : '') + s);
+			},
+			
+			isFullscreen: function () {
+				return (document.webkitIsFullScreen === true || 
+						document.mozFullScreen === true || 
+						document.fullScreen === true);
 			}
 		});
 		

@@ -1,17 +1,21 @@
-html {
+body {
+	margin: 0;
+	padding: 0;
+}
+.emp-player-wrapper {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	background-color: #000000;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height: 0;
-}
-video { background-color: #000000; }
-.emp-fullscreen-wrapper {
-	width: 100%;
-	height: 100%;
 }
 video.emp-video-fullscreen {
 	width: 100%;
 	height: 100%;
 }
 .emp-controls {
+	width: 100%;
 	height: 38px;
 	overflow: hidden;
 	border-bottom: 1px solid #000000;

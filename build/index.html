@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>RequireJS Example</title>
+	<title>EM Player</title>
 	<meta charset="utf-8">
 	
 	<link rel="stylesheet" href="css/emplayer.css" />
@@ -12,15 +12,20 @@
 </head>
 
 <body>
-	<video id="test-video" width="800" height="480" preload="auto">
+	<video id="emp-video" 
+		width="800" height="480" 
+		poster="http://media.w3.org/2010/05/sintel/poster.png">
+		
 		<source src="http://media.w3.org/2010/05/sintel/trailer.mp4" />
 		<source src="http://media.w3.org/2010/05/sintel/trailer.webm" />
+		
 	</video>
 	
 	<script type="text/javascript">
 		var empConfig = {
-			videoID: 'test-video',
-			autoPlay: true
+			showPlaybackRate: true,
+			showVolume: true,
+			showFullscreen: true
 		}
 	</script>
 </body>

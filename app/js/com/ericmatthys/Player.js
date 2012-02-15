@@ -26,6 +26,8 @@ define(
 				controls.on('seek', container.seek, container);
 				controls.on('setVolume', container.setVolume, container);
 				controls.on('setPlaybackRate', container.setPlaybackRate, container);
+				controls.on('enterFullscreen', container.enterFullscreen, container);
+				controls.on('exitFullscreen', container.exitFullscreen, container);
 				controls.seekBar.on('seek', container.seek, container);
 			}
 		}

@@ -8,8 +8,8 @@ define(
 	
     function (Backbone, PlayerModel, SeekBar, template) {
 		//---------- Constants ----------
-		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
 		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
+		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
 		
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
 		var PAUSE_CLASS = 'emp-pause-button';
@@ -34,8 +34,6 @@ define(
 		var PLAYBACK_RATE_THUMB_CLASS = 'emp-playback-rate-thumb';
 		var PLAYBACK_RATE_DIVIDER_CLASS = 'emp-divider-playback-rate';
 		
-		var FULLSCREEN_WRAPPER_CLASS = 'emp-fullscreen-wrapper';
-		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';
 		var FULLSCREEN_BUTTON_CLASS = 'emp-fullscreen-button';
 		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
 		
@@ -69,24 +67,17 @@ define(
 				_.bindAll(this, 'onVolumeSliderMouseMove', 
 								'onVolumeSliderMouseUp', 
 								'onPlaybackRateSliderMouseMove', 
-								'onPlaybackRateSliderMouseUp');
+								'onPlaybackRateSliderMouseUp',
+								'onFullscreenMouseMove', 
+								'onFullscreenShowControls', 
+								'onFullscreenHideControls');
 				
 				this.model.bind('change:formattedDuration', this.onDurationChange, this);
 				this.model.bind('change:paused', this.onPausedChange, this);
 				this.model.bind('change:formattedTime', this.onCurrentTimeChange, this);
 				this.model.bind('change:volume', this.onVolumeChange, this);
 				this.model.bind('change:playbackRate', this.onPlaybackRateChange, this);
-				
-				// Conditionally bind to fullscreen events
-				if (this.showFullscreen === true) {
-					_.bindAll(this, 'onFullscreenChange', 
-									'onFullscreenMouseMove', 
-									'onFullscreenShowControls', 
-									'onFullscreenHideControls');
-					
-					$(document).bind('webkitfullscreenchange', this.onFullscreenChange);
-					$(document).bind('mozfullscreenchange', this.onFullscreenChange);
-				}
+				this.model.bind('change:fullscreen', this.onFullscreenChange, this);
 				
 				this.create(options.$video);
 			},
@@ -98,9 +89,6 @@ define(
 				
 				this.setElement(controlsEl);
 				this.render();
-				
-				// Adjust the width of the controls to the width of the video
-				this.$el.width(PlayerModel.video.get('width'));
 				
 				// Create the seek bar
 				this.seekBar = new SeekBar();
@@ -197,68 +185,32 @@ define(
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				var $video = $('#' + PlayerModel.config.get('videoID'));
-				
-				if (document.webkitIsFullScreen === true || 
-					document.mozFullScreen === true || 
-					document.fullScreen === true) {
-					// If we are already in fullscreen, cancel fullscreen
-					if (typeof(document.cancelFullScreen) === 'function') {
-						document.cancelFullScreen();
-					} else if (typeof(document.exitFullscreen) === 'function') {
-						document.exitFullscreen();
-					} else if (typeof(document.mozCancelFullScreen) === 'function') {
-						document.mozCancelFullScreen();
-					} else if (typeof(document.webkitCancelFullScreen) === 'function') {
-						document.webkitCancelFullScreen();
-					}
-				} else {
-					// Wrap the controls and video in a div that we can request fullscreen with
-					this.$el.wrap(this.make('div', {'class': FULLSCREEN_WRAPPER_CLASS}));
-
-					var $wrapper = $('.' + FULLSCREEN_WRAPPER_CLASS);
-					var wrapper = $wrapper.get(0);
-
-					$wrapper.prepend($video);
-
-					if (wrapper.requestFullScreen) {
-						wrapper.requestFullScreen();
-					} else if (wrapper.requestFullscreen) {
-						wrapper.requestFullscreen();
-					} else if (wrapper.mozRequestFullScreen) {
-						wrapper.mozRequestFullScreen();
-					} else if (wrapper.webkitRequestFullScreen) {
-						wrapper.webkitRequestFullScreen();
-					}
+				if (PlayerModel.video.isFullscreen() === true) {
+					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
+					
+					this.trigger('exitFullscreen');
+				} else {	
+					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
+					
+					this.trigger('enterFullscreen');
 				}
 			},
 			
 			onFullscreenChange: function () {
-				var $video = $('#' + PlayerModel.config.get('videoID'));
-				
-				if (document.webkitIsFullScreen === true || 
-					document.mozFullScreen === true || 
-					document.fullScreen === true) {
+				if (PlayerModel.video.isFullscreen() === true) {
 					$(document).bind('mousemove', this.onFullscreenMouseMove);
 					
-					// Make sure the setTimeout is started
+					// Start the setTimeout immediately
 					this.onFullscreenMouseMove();
 					
 					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
-					this.$el.css('width', '100%');
-					$video.addClass(FULLSCREEN_VIDEO_CLASS);
-				} else {	
+				} else {
 					$(document).unbind('mousemove', this.onFullscreenMouseMove);
 					
 					// Make sure the controls are visible again
 					this.onFullscreenShowControls();
 					
-					// Remove the fullscreen wrapper
-					this.$el.unwrap();
-					
 					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
-					this.$el.css('width', PlayerModel.video.get('width'));
-					$video.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 				
 				// Re-render the seekbar since the controls width has changed
