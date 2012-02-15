@@ -266,8 +266,11 @@ video.emp-video-fullscreen {
 }
 
 .emp-seek-bar:hover .emp-progress-thumb,
+.emp-active-slider .emp-progress-thumb,
 .emp-volume:hover .emp-volume-thumb,
-.emp-playback-rate:hover .emp-playback-rate-thumb {
+.emp-active-slider .emp-volume-thumb,
+.emp-playback-rate:hover .emp-playback-rate-thumb,
+.emp-active-slider .emp-playback-rate-thumb {
 	background: #ffffff;
 
 	-moz-box-shadow: 0 0 5px rgba(255, 255, 255, .5);
