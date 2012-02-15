@@ -116,5 +116,5 @@ define(
 		});
 		
 		return SeekBar;
-    }
+	}
 );

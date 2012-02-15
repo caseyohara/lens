@@ -358,5 +358,5 @@ define(
 		});
 		
 		return Controls;
-    }
+	}
 );

@@ -221,5 +221,5 @@ define(
 		});
 		
 		return Container;
-    }
+	}
 );

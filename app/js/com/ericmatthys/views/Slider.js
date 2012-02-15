@@ -124,5 +124,5 @@ define(
 		});
 		
 		return Slider;
-    }
+	}
 );
