@@ -4,13 +4,16 @@ EM Player provides the base architecture for an HTML5 video player that can be e
 
 # Usage
 
-A video tag with the correct id is all that is needed by the default player.
+Either jQuery or Zepto must be used alongside EM Player. The video wrapper and controls will be injected around the video tag with the correct element id. The default element id is *emp-video*.
 
 ``` html
 <video id="emp-video" width="800" height="480" poster="http://media.w3.org/2010/05/sintel/poster.png">
 	<source src="http://media.w3.org/2010/05/sintel/trailer.mp4" />
 	<source src="http://media.w3.org/2010/05/sintel/trailer.webm" />
 </video>
+
+<script type="text/javascript" src="js/libs/zepto-0.8-min.js"></script>
+<script type="text/javascript" src="js/emplayer.js"></script>
 ```
 
 # Configuration Options:
