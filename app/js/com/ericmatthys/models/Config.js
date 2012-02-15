@@ -7,6 +7,7 @@ define(
 		var Config = Backbone.Model.extend({
 			defaults: {
 				videoID: 'emp-video',
+				overlayControls: false,
 				showVolume: true,
 				showPlaybackRate: true,
 				showFullscreen: true
@@ -21,6 +22,10 @@ define(
 						this.set({ 'videoID': c.videoID });
 					}
         		    
+					if (typeof(c.overlayControls) !== 'undefined') {
+						this.set({ 'overlayControls': c.overlayControls });
+					}
+					
 					if (typeof(c.showVolume) !== 'undefined') {
 						this.set({ 'showVolume': c.showVolume });
 					}

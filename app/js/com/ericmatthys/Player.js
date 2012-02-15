@@ -15,6 +15,7 @@ define(
 				
 				controls = new Controls({
 					$video: container.$el,
+					overlay: PlayerModel.config.get('overlayControls'),
 					showVolume: PlayerModel.config.get('showVolume'),
 					showFullscreen: (container.supportsFullscreen() && PlayerModel.config.get('showFullscreen')),
 					showPlaybackRate: (container.supportsPlaybackRate() && PlayerModel.config.get('showPlaybackRate'))

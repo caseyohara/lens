@@ -46,6 +46,7 @@ define(
 			playbackRateSlider: null,
 			muted: false,
 			mutedVolume: 0,
+			overlay: false,
 			showVolume: false,
 			showFullscreen: false,
 			showPlaybackRate: false,
@@ -58,11 +59,12 @@ define(
 			
 			//---------- Init ----------
 			initialize: function (options) {
+				this.overlay = options.overlay;
 				this.showVolume = options.showVolume;
 				this.showFullscreen = options.showFullscreen;
 				this.showPlaybackRate = options.showPlaybackRate;
 				
-				_.bindAll(this, 'onFullscreenMouseMove', 
+				_.bindAll(this, 'onDocumentMouseMove', 
 								'showControls', 
 								'hideControls');
 				
@@ -106,6 +108,17 @@ define(
 				this.playbackRateSlider.on('buttonClick', this.onPlaybackRateSliderButtonClick, this);
 				this.playbackRateSlider.on('valueChange', this.onPlaybackRateSliderValueChange, this);
 				this.playbackRateSlider.on('release', this.onPlaybackRateSliderRelease, this);
+				
+				// Conditionally add the overlay controls class
+				if (this.overlay === true) {
+					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
+					
+					// Hide the controls on mouse inactivity
+					$(document).bind('mousemove', this.onDocumentMouseMove);
+
+					// Start the setTimeout immediately
+					this.onDocumentMouseMove();
+				}
 				
 				// Conditionally hide controls
 				if (this.showVolume === false) {
@@ -153,10 +166,12 @@ define(
 				event.preventDefault();
 				
 				if (PlayerModel.video.isFullscreen() === true) {
-					this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
+					if (this.overlay === false) {
+						this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
+					}
 					
 					this.trigger('exitFullscreen');
-				} else {	
+				} else {
 					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 					
 					this.trigger('enterFullscreen');
@@ -164,20 +179,23 @@ define(
 			},
 			
 			onFullscreenChange: function () {
-				if (PlayerModel.video.isFullscreen() === true) {
-					$(document).bind('mousemove', this.onFullscreenMouseMove);
+				if (this.overlay === false) {
+					if (PlayerModel.video.isFullscreen() === true) {
+						// Hide the controls on mouse inactivity
+						$(document).bind('mousemove', this.onDocumentMouseMove);
+						
+						// Start the setTimeout immediately
+						this.onDocumentMouseMove();
+						
+						this.$el.addClass(OVERLAY_CONTROLS_CLASS);
+					} else {
+						$(document).unbind('mousemove', this.onDocumentMouseMove);
 					
-					// Start the setTimeout immediately
-					this.onFullscreenMouseMove();
-					
-					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
-				} else {
-					$(document).unbind('mousemove', this.onFullscreenMouseMove);
-					
-					// Make sure the controls are visible again
-					this.showControls();
-					
-					this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
+						// Make sure the controls are visible again
+						this.showControls();
+						
+						this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
+					}
 				}
 				
 				// Re-render the seekbar since the controls width has changed
@@ -187,7 +205,7 @@ define(
 				this.trigger('sync');
 			},
 			
-			onFullscreenMouseMove: function() {
+			onDocumentMouseMove: function() {
 				this.showControls();
 				
 				// If there is no mouse movement for 3 seconds, hide the controls
