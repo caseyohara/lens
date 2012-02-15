@@ -18,7 +18,7 @@ In order to reduce HTTP requests and for ease of use, Underscore, Backbone, and 
 <script type="text/javascript" src="js/emplayer.js"></script>
 ```
 
-# Configuration Options:
+# Configuration Options
 
 Although not required to use the default player, an *empConfig* object can be used to set configuration options on the player.
 
