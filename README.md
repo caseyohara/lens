@@ -4,7 +4,7 @@ EM Player provides the base architecture for an HTML5 video player that can be e
 
 # Configuration Options:
 
-Although not required to use the default player, an empConfig object can be used to set configuration options on the player.
+Although not required to use the default player, an *empConfig* object can be used to set configuration options on the player.
 
 Defaults:
 
