@@ -18,7 +18,7 @@ For ease of use and to reduce HTTP requests, Underscore, Backbone, and RequireJS
 <script type="text/javascript" src="js/lens.js"></script>
 ```
 
-# Configuration Options
+# Configuration
 
 Although not required to use the default player, a *lensConfig* object can be used to set configuration options on the player.
 
