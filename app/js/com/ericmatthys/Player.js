@@ -5,9 +5,9 @@ define(
 		'com/ericmatthys/views/Controls'
 	],
 	
-    function (PlayerModel, Container, Controls) {
-        var container;
-        var controls;
+	function (PlayerModel, Container, Controls) {
+		var container;
+		var controls;
         
 		return {
 			initialize: function () {

@@ -4,7 +4,7 @@ define(
 		'text!templates/slider.html'
 	],
 	
-    function (Backbone, template) {
+	function (Backbone, template) {
 		//---------- Constants ----------
 		var ACTIVE_SLIDER_CLASS = 'emp-active-slider';
 		var BUTTON_CLASS = 'emp-slider-button';

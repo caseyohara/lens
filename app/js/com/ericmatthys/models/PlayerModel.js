@@ -6,7 +6,7 @@ define(
 	
 	function (Config, Video) {
 		return {
-		    config: new Config(),
+			config: new Config(),
 			video: new Video()
 		};
 	}

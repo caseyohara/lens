@@ -7,7 +7,7 @@ define(
 		'text!templates/controls.html'
 	],
 	
-    function (Backbone, PlayerModel, SeekBar, Slider, template) {
+	function (Backbone, PlayerModel, SeekBar, Slider, template) {
 		//---------- Constants ----------
 		var OVERLAY_CONTROLS_CLASS = 'emp-controls-overlay';
 		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';

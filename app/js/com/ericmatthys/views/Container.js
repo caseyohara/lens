@@ -4,7 +4,7 @@ define(
 		'com/ericmatthys/models/PlayerModel'
 	],
 	
-    function (Backbone, PlayerModel) {
+	function (Backbone, PlayerModel) {
 		//---------- Constants ----------
 		var WRAPPER_CLASS = 'emp-player-wrapper';
 		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';

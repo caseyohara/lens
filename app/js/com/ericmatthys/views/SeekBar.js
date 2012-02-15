@@ -5,7 +5,7 @@ define(
 		'text!templates/seekbar.html'
 	],
 	
-    function (Backbone, PlayerModel, template) {
+	function (Backbone, PlayerModel, template) {
 		//---------- Constants ----------
 		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		var BUFFER_BAR_CLASS = 'emp-buffer-bar';
