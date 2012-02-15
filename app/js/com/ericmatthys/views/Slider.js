@@ -7,10 +7,10 @@ define(
     function (Backbone, template) {
 		//---------- Constants ----------
 		var ACTIVE_SLIDER_CLASS = 'emp-active-slider';
-		var BUTTON_CLASS = '-button';
-		var TRACK_CLASS = '-track';
-		var THUMB_CLASS = '-thumb';
-		var BAR_CLASS = '-bar';
+		var BUTTON_CLASS = 'emp-slider-button';
+		var TRACK_CLASS = 'emp-slider-track';
+		var THUMB_CLASS = 'emp-slider-thumb';
+		var BAR_CLASS = 'emp-slider-bar';
 		
 		var Slider = Backbone.View.extend({
 			
@@ -32,13 +32,13 @@ define(
 			
 			//---------- Control ----------
 			render: function () {
-				this.$el.html(_.template(template, {className: this.className}));
+				this.$el.html(_.template(template, {}));
 				
 				return this;
 			},
 			
 			calculateValue: function (pageX) {
-				var $track = $('.' + this.className + TRACK_CLASS);
+				var $track = this.$el.find('.' + TRACK_CLASS);
 				var localX = pageX - $track.offset().left;
 				var value = localX / $track.width();
 				
@@ -58,9 +58,9 @@ define(
 			setValue: function (value) {
 				this.currentValue = value;
 				
-				var $track = $('.' + this.className + TRACK_CLASS);
-				var $thumb = $('.' + this.className + THUMB_CLASS);
-				var $bar = $('.' + this.className + BAR_CLASS);
+				var $track = this.$el.find('.' + TRACK_CLASS);
+				var $thumb = this.$el.find('.' + THUMB_CLASS);
+				var $bar = this.$el.find('.' + BAR_CLASS);
 				
 				var trackWidth = $track.width();
 				var thumbRadius = $thumb.width() / 2;

@@ -9,7 +9,7 @@ define(
 	
     function (Backbone, PlayerModel, SeekBar, Slider, template) {
 		//---------- Constants ----------
-		var FULLSCREEN_CONTROLS_CLASS = 'emp-controls-fullscreen';
+		var OVERLAY_CONTROLS_CLASS = 'emp-controls-overlay';
 		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
 		
 		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
@@ -18,15 +18,15 @@ define(
 		var CURRENT_TIME_CLASS = 'emp-current-time';
 		var DURATION_CLASS = 'emp-duration';
 		
+		var SLIDER_BUTTON_CLASS = 'emp-slider-button'
+		
 		var VOLUME_CLASS = 'emp-volume';
 		var VOLUME_DIVIDER_CLASS = 'emp-divider-volume';
-		var VOLUME_BUTTON_CLASS = 'emp-volume-button';
 		var VOLUME_BUTTON_LOW_CLASS = 'emp-volume-button-low';
 		var VOLUME_BUTTON_OFF_CLASS = 'emp-volume-button-off';
 		
 		var PLAYBACK_RATE_CLASS = 'emp-playback-rate';
 		var PLAYBACK_RATE_DIVIDER_CLASS = 'emp-divider-playback-rate';
-		var PLAYBACK_RATE_BUTTON_CLASS = 'emp-playback-rate-button';
 		var PLAYBACK_RATE_BUTTON_POINT1X_CLASS = 'emp-playback-rate-button-point1x';
 		var PLAYBACK_RATE_BUTTON_POINT5X_CLASS = 'emp-playback-rate-button-point5x';
 		var PLAYBACK_RATE_BUTTON_1X_CLASS = 'emp-playback-rate-button-1x';
@@ -153,11 +153,11 @@ define(
 				event.preventDefault();
 				
 				if (PlayerModel.video.isFullscreen() === true) {
-					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
+					this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
 					
 					this.trigger('exitFullscreen');
 				} else {	
-					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
+					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 					
 					this.trigger('enterFullscreen');
 				}
@@ -170,14 +170,14 @@ define(
 					// Start the setTimeout immediately
 					this.onFullscreenMouseMove();
 					
-					this.$el.addClass(FULLSCREEN_CONTROLS_CLASS);
+					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 				} else {
 					$(document).unbind('mousemove', this.onFullscreenMouseMove);
 					
 					// Make sure the controls are visible again
 					this.showControls();
 					
-					this.$el.removeClass(FULLSCREEN_CONTROLS_CLASS);
+					this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
 				}
 				
 				// Re-render the seekbar since the controls width has changed
@@ -216,7 +216,7 @@ define(
 			},
 			
 			onVolumeChange: function () {
-				var $volumeButton = $('.' + VOLUME_BUTTON_CLASS);
+				var $volumeButton = $('.' + VOLUME_CLASS + ' .' + SLIDER_BUTTON_CLASS);
 				var volume = PlayerModel.video.get('volume');
 				
 				// Update the slider
@@ -239,7 +239,7 @@ define(
 			},
 			
 			onPlaybackRateChange: function () {
-				var $playbackRateButton = $('.' + PLAYBACK_RATE_BUTTON_CLASS);
+				var $playbackRateButton = $('.' + PLAYBACK_RATE_CLASS + ' .' + SLIDER_BUTTON_CLASS);
 				var playbackRate = PlayerModel.video.get('playbackRate');
 				
 				// Update the slider
