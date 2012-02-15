@@ -20,7 +20,7 @@ For ease of use and to reduce HTTP requests, Underscore, Backbone, and RequireJS
 
 # Configuration Options
 
-Although not required to use the default player, an *lensConfig* object can be used to set configuration options on the player.
+Although not required to use the default player, a *lensConfig* object can be used to set configuration options on the player.
 
 **Defaults**
 
