@@ -1,4 +1,4 @@
-# EM Player - A base HTML5 video player using Backbone and RequireJS
+# EM Player - HTML5 video using Backbone and RequireJS
 
 EM Player provides the base architecture for an HTML5 video player that can be easily skinned.
 
@@ -15,7 +15,7 @@ A video tag with the correct id is all that is needed by the default player.
 
 # Configuration Options:
 
-Although not required to use the default player, an empConfig object can be used to set configuration options on the player.
+Although not required to use the default player, an *empConfig* object can be used to set configuration options on the player.
 
 Defaults:
 
