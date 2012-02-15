@@ -6,7 +6,7 @@ define(
 	function (Backbone) {
 		var Config = Backbone.Model.extend({
 			defaults: {
-				videoID: 'emp-video',
+				videoID: 'lens-video',
 				overlayControls: false,
 				showVolume: true,
 				showPlaybackRate: true,
@@ -15,8 +15,8 @@ define(
 			
 			initialize: function () {
 			    // Set the config options if available
-        		if (typeof(window.empConfig) !== 'undefined') {
-        			var c = window.empConfig;
+        		if (typeof(window.lensConfig) !== 'undefined') {
+        			var c = window.lensConfig;
         		    
 					if (typeof(c.videoID) !== 'undefined') {
 						this.set({ 'videoID': c.videoID });

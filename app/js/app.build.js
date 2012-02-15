@@ -11,7 +11,7 @@
 	},
 	modules: [
 		{
-			name: 'emplayer',
+			name: 'lens',
 			include: ['requireLib', 'main'],
 			create: true
 		}
