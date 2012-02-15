@@ -6,7 +6,7 @@ EM Player provides the base architecture for an HTML5 video player that can be e
 
 Either jQuery or Zepto must be used alongside EM Player. The video wrapper and controls will be injected around the video tag with the correct element id. The default element id is *emp-video*.
 
-For ease of use, Underscore, Backbone, and RequireJS are packaged into the emplayer.js script.
+In order to reduce HTTP requests and for ease of use, Underscore, Backbone, and RequireJS are packaged into the emplayer.js script.
 
 ``` html
 <video id="emp-video" width="800" height="480" poster="http://media.w3.org/2010/05/sintel/poster.png">
