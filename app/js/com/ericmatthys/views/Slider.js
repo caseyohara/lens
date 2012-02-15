@@ -17,6 +17,7 @@ define(
 			//---------- Properties ----------
 			currentValue: 0,
 			dragging: false,
+			
 			events: {
 				'click .emp-slider-button': 'onButtonClick',
 				'mousedown .emp-slider-track': 'onSliderMouseDown',

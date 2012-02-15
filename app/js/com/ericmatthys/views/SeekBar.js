@@ -79,20 +79,25 @@ define(
 			},
 			
 			onCurrentTimeChange: function () {
+				var $track = $('.' + SEEK_BAR_CLASS);
+				var $thumb = $('.' + PROGRESS_THUMB_CLASS);
+				var $bar = $('.' + PROGRESS_BAR_CLASS);
+				
 				// Update the progress bar to reflect the current time
-				var seekBarWidth = $('.' + SEEK_BAR_CLASS).width();
+				var trackWidth = $track.width();
+				var thumbRadius = $thumb.width() / 2;
 				var pct = PlayerModel.video.get('currentTime') / PlayerModel.video.get('duration');
-				var progressBarWidth = pct * seekBarWidth;
+				var barWidth = pct * trackWidth;
 				
 				// Constrain the progess bar so the thumb fits in the seek bar
-				if (progressBarWidth < 4) {
-					progressBarWidth = 4;
-				} else if (progressBarWidth + 4 > seekBarWidth) {
-					progressBarWidth = seekBarWidth - 4;
+				if (barWidth < thumbRadius) {
+					barWidth = thumbRadius;
+				} else if (barWidth + thumbRadius > trackWidth) {
+					barWidth = trackWidth - thumbRadius;
 				}
 				
-				$('.' + PROGRESS_BAR_CLASS).width(progressBarWidth);
-				$('.' + PROGRESS_THUMB_CLASS).css('left', progressBarWidth - 4);
+				$('.' + PROGRESS_BAR_CLASS).width(barWidth);
+				$('.' + PROGRESS_THUMB_CLASS).css('left', barWidth - thumbRadius);
 			},
 			
 			onBufferChange: function () {
