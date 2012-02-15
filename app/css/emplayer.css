@@ -80,16 +80,21 @@ video.emp-video-fullscreen {
 
 .emp-playback-rate-button { background: transparent url(../images/icons.png) 0 -150px; }
 .emp-playback-rate-button:hover { background-position: -40px -150px; }
-.emp-playback-rate:hover .emp-playback-rate-button-point1x { background-position: 0 -180px; }
-.emp-playback-rate:hover .emp-playback-rate-button-point1x:hover { background-position: -40px -180px; }
-.emp-playback-rate:hover .emp-playback-rate-button-point5x { background-position: 0 -210px; }
-.emp-playback-rate:hover .emp-playback-rate-button-point5x:hover { background-position: -40px -210px; }
-.emp-playback-rate:hover .emp-playback-rate-button-1x { background-position: 0 -240px; }
-.emp-playback-rate:hover .emp-playback-rate-button-1x:hover { background-position: -40px -240px; }
-.emp-playback-rate:hover .emp-playback-rate-button-2x { background-position: 0 -270px; }
-.emp-playback-rate:hover .emp-playback-rate-button-2x:hover { background-position: -40px -270px; }
-.emp-playback-rate:hover .emp-playback-rate-button-3x { background-position: 0 -300px; }
-.emp-playback-rate:hover .emp-playback-rate-button-3x:hover { background-position: -40px -300px; }
+.emp-playback-rate:hover .emp-playback-rate-button-point1x,
+.emp-active-slider .emp-playback-rate-button-point1x { background-position: 0 -180px; }
+.emp-playback-rate-button-point1x:hover { background-position: -40px -180px !important; }
+.emp-playback-rate:hover .emp-playback-rate-button-point5x,
+.emp-active-slider .emp-playback-rate-button-point5x { background-position: 0 -210px; }
+.emp-playback-rate-button-point5x:hover { background-position: -40px -210px !important; }
+.emp-playback-rate:hover .emp-playback-rate-button-1x,
+.emp-active-slider .emp-playback-rate-button-1x { background-position: 0 -240px; }
+.emp-playback-rate-button-1x:hover { background-position: -40px -240px !important; }
+.emp-playback-rate:hover .emp-playback-rate-button-2x,
+.emp-active-slider .emp-playback-rate-button-2x { background-position: 0 -270px; }
+.emp-playback-rate-button-2x:hover { background-position: -40px -270px !important; }
+.emp-playback-rate:hover .emp-playback-rate-button-3x,
+.emp-active-slider .emp-playback-rate-button-3x { background-position: 0 -300px; }
+.emp-playback-rate-button-3x:hover { background-position: -40px -300px !important; }
 
 .emp-fullscreen-button {
 	float: right;

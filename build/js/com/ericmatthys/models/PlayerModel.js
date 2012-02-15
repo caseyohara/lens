@@ -1,1 +1,0 @@
-define(["com/ericmatthys/models/Config","com/ericmatthys/models/Video"],function(a,b){return{config:new a,video:new b}})
