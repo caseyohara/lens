@@ -1,4 +1,4 @@
-# EM Player - HTML5 video using Backbone and RequireJS
+# EM Player -- HTML5 video using Backbone and RequireJS
 
 EM Player provides the base architecture for an HTML5 video player that can be easily skinned.
 
@@ -20,7 +20,7 @@ Either jQuery or Zepto must be used alongside EM Player. The video wrapper and c
 
 Although not required to use the default player, an *empConfig* object can be used to set configuration options on the player.
 
-Defaults:
+**Defaults**
 
 ``` js
 var empConfig = {
