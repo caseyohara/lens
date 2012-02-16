@@ -13,11 +13,30 @@ define(
 					var c = window.lensConfig;
 
 					if (c.manual !== true) {
-						this.initializePlayer(c);
+					 	if (c.autoByID === true) {
+							this.initializePlayer(c);
+						} else {
+							this.initializeAllPlayers(c);
+						}
 					}
 				} else {
-					this.initializePlayer();
+					this.initializeAllPlayers();
 				}
+			},
+			
+			initializeAllPlayers: function (config) {
+				config = config || {};
+				
+				// Capture this so we can directly access it in the each function
+				var Lens = this;
+				
+				// Initialize a player for each video tag
+				$('video').each(function () {
+					var clonedConfig = _.clone(config);
+					clonedConfig.videoID = this.id;
+					
+					Lens.initializePlayer(clonedConfig);
+				});
 			},
 			
 			initializePlayer: function (config) {
