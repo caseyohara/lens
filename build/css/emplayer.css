@@ -244,10 +244,6 @@ video.emp-video-fullscreen {
 	background: -ms-radial-gradient(center, ellipse cover, #aaaaaa 0%,#dddddd 100%);
 	background: radial-gradient(center, ellipse cover, #aaaaaa 0%,#dddddd 100%);
 	
-	-moz-box-shadow: 0 1px 1px #000;
-	-webkit-box-shadow: 0 1px 1px #000;
-	box-shadow: 0 1px 1px #000;
-	
 	-webkit-transition: left .1s ease-in-out;
 	-moz-transition: left .1s ease-in-out;
 	-o-transition: left .1s ease-in-out;
