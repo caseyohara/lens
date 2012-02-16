@@ -2,7 +2,7 @@
 
 Lens provides the base architecture for an HTML5 video player that can be easily maintained and skinned.
 
-[Example](http://ericmatthys.com/experiments/lens/)
+[View an Example](http://ericmatthys.com/experiments/lens/)
 
 # Usage
 
