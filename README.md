@@ -2,6 +2,8 @@
 
 Lens provides the base architecture for an HTML5 video player that can be easily maintained and skinned.
 
+[Example](http://ericmatthys.com/experiments/lens/)
+
 # Usage
 
 Either jQuery or Zepto must be used alongside Lens. The video wrapper and controls will be injected around the video tag.
