@@ -19,6 +19,7 @@ define(
 			this.controls = new Controls({
 				video: this.video,
 				$video: this.config.get('$video'),
+				$wrapper: this.container.$wrapper,
 				overlay: this.config.get('overlayControls'),
 				hideVolume: this.config.get('hideVolume'),
 				hideFullscreen: (this.container.supportsFullscreen() === false || this.config.get('hideFullscreen') === true),

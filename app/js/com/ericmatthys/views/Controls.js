@@ -42,6 +42,8 @@ define(
 			//---------- Properties ----------
 			className: 'lens-controls',
 			video: null,
+			$video: null,
+			$wrapper: null,
 			seekBar: null,
 			volumeSlider: null,
 			playbackRateSlider: null,
@@ -61,12 +63,14 @@ define(
 			//---------- Init ----------
 			initialize: function (options) {
 				this.video = options.video;
+				this.$video = options.$video;
+				this.$wrapper = options.$wrapper;
 				this.overlay = options.overlay;
 				this.hideVolume = options.hideVolume;
 				this.hideFullscreen = options.hideFullscreen;
 				this.hidePlaybackRate = options.hidePlaybackRate;
 				
-				_.bindAll(this, 'onDocumentMouseMove', 'showControls', 'hideControls');
+				_.bindAll(this, 'onVideoMouseMove', 'showControls', 'hideControls');
 				
 				this.model = this.video;
 				this.model.bind('change:formattedDuration', this.onDurationChange, this);
@@ -82,7 +86,7 @@ define(
 			create: function (options) {
 				// Create the controls element and insert it into the DOM
 				var controlsEl = this.make('div', {'class': this.className});
-				options.$video.after(controlsEl);
+				this.$video.after(controlsEl);
 				
 				this.setElement(controlsEl);
 				this.render();
@@ -119,10 +123,10 @@ define(
 					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 					
 					// Hide the controls on mouse inactivity
-					$(document).on('mousemove', this.onDocumentMouseMove);
+					this.$wrapper.on('mousemove', this.onVideoMouseMove);
 
 					// Start the setTimeout immediately
-					this.onDocumentMouseMove();
+					this.onVideoMouseMove();
 				}
 				
 				// Conditionally hide controls
@@ -187,14 +191,14 @@ define(
 				if (this.overlay === false) {
 					if (this.video.isFullscreen() === true) {
 						// Hide the controls on mouse inactivity
-						$(document).on('mousemove', this.onDocumentMouseMove);
+						this.$wrapper.on('mousemove', this.onVideoMouseMove);
 						
 						// Start the setTimeout immediately
-						this.onDocumentMouseMove();
+						this.onVideoMouseMove();
 						
 						this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 					} else {
-						$(document).off('mousemove', this.onDocumentMouseMove);
+						this.$wrapper.off('mousemove', this.onVideoMouseMove);
 					
 						// Make sure the controls are visible again
 						this.showControls();
@@ -210,7 +214,7 @@ define(
 				this.trigger('sync');
 			},
 			
-			onDocumentMouseMove: function() {
+			onVideoMouseMove: function() {
 				this.showControls();
 				
 				// If there is no mouse movement for 3 seconds, hide the controls
