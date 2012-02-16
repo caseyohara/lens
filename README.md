@@ -37,7 +37,6 @@ A configuration option can be set to initialize a single player based on the id 
 
 <script type="text/javascript">
 var lensConfig = {
-	autoByID: true,
 	videoID: 'test-video'
 };
 </script>
@@ -68,12 +67,29 @@ Although not required by the default player, a *lensConfig* object can be used t
 
 ``` js
 var lensConfig = {
-	autoByID: false,
 	manual: false,
 	videoID: 'lens-video',
 	overlayControls: false,
-	showVolume: true,
-	showFullscreen: true,
-	showPlaybackRate: true
+	hideVolume: false,
+	hideFullscreen: false,
+	hidePlaybackRate: false
 };
 ```
+
+**manual**
+(Boolean) A flag that, if true, will allow for multiple players to be initialized individually.
+
+**videoID**
+(String) The id attribute of a video tag to be initialized.
+
+**overlayControls**
+(Boolean) Overlays the control bar on top of the video instead of it beneath the video.
+
+**showVolume**
+(Boolean) Hides the volume control.
+
+**showFullscreen**
+(Boolean) Hides the fullscreen control (if supported).
+
+**showPlaybackRate**
+(Boolean) Hides the playback rate control (if supported).

@@ -8,9 +8,9 @@ define(
 			defaults: {
 				videoID: 'lens-video',
 				overlayControls: false,
-				showVolume: true,
-				showPlaybackRate: true,
-				showFullscreen: true
+				hideVolume: false,
+				hidePlaybackRate: false,
+				hideFullscreen: false
 			},
 			
 			initialize: function (options) {
@@ -27,16 +27,16 @@ define(
 					this.set({ 'overlayControls': options.overlayControls });
 				}
 				
-				if (typeof(options.showVolume) !== 'undefined') {
-					this.set({ 'showVolume': options.showVolume });
+				if (typeof(options.hideVolume) !== 'undefined') {
+					this.set({ 'hideVolume': options.hideVolume });
 				}
 				
-				if (typeof(options.showPlaybackRate) !== 'undefined') {
-					this.set({ 'showPlaybackRate': options.showPlaybackRate });
+				if (typeof(options.hidePlaybackRate) !== 'undefined') {
+					this.set({ 'hidePlaybackRate': options.hidePlaybackRate });
 				}
 				
-				if (typeof(options.showFullscreen) !== 'undefined') {
-					this.set({ 'showFullscreen': options.showFullscreen });
+				if (typeof(options.hideFullscreen) !== 'undefined') {
+					this.set({ 'hideFullscreen': options.hideFullscreen });
 				}
 			}
 		});

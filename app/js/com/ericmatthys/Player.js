@@ -20,9 +20,9 @@ define(
 				config: this.config,
 				video: this.video,
 				overlay: this.config.get('overlayControls'),
-				showVolume: this.config.get('showVolume'),
-				showFullscreen: (this.container.supportsFullscreen() && this.config.get('showFullscreen')),
-				showPlaybackRate: (this.container.supportsPlaybackRate() && this.config.get('showPlaybackRate'))
+				showVolume: !this.config.get('hideVolume'),
+				showFullscreen: (this.container.supportsFullscreen() && !this.config.get('hideFullscreen')),
+				showPlaybackRate: (this.container.supportsPlaybackRate() && !this.config.get('hidePlaybackRate'))
 			});
 			
 			// Route control events to the container

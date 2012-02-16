@@ -13,10 +13,10 @@ define(
 					var c = window.lensConfig;
 
 					if (c.manual !== true) {
-					 	if (c.autoByID === true) {
-							this.initializePlayer(c);
-						} else {
+					 	if (typeof(c.videoID) === 'undefined') {
 							this.initializeAllPlayers(c);
+						} else {
+							this.initializePlayer(c);
 						}
 					}
 				} else {
