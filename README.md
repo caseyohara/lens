@@ -24,7 +24,7 @@ The default player will initialize for all video tags and does not require any a
 
 **Automatic By ID**
 
-A configuration option can be set to initialize a single player based on the id of the video tag.
+A configuration option can be set to initialize a single player based on the id of the video tag. If a videoID configuration option is set, *only* the video tag with that id will be initialized. All other video tags will be left untouched.
 
 ``` html
 <video id="test-video" width="800" height="480" poster="http://media.w3.org/2010/05/sintel/poster.png">
