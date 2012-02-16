@@ -45,7 +45,7 @@ var lensConfig = {
 
 **Manual**
 
-To initialize multiple players based on the ids of their video tags, players must be initialized manually. A configuration object can then passed as the argument for initializePlayer.
+To initialize multiple players based on the ids of their video tags, players must be initialized manually. A configuration object can then be passed as the argument for initializePlayer.
 
 ``` js
 var lensConfig = {
