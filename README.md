@@ -4,16 +4,16 @@ Lens provides the base architecture for an HTML5 video player that can be easily
 
 # Usage
 
-Either jQuery or Zepto must be used alongside Lens. The video wrapper and controls will be injected around the video tags.
+Either jQuery or Zepto must be used alongside Lens. The video wrapper and controls will be injected around the video tag.
 
 For ease of use and to reduce HTTP requests, Underscore, Backbone, and RequireJS are packaged into the lens.js script.
 
 **Automatic By Tag**
 
-The default player will initialize for all video tags and does not require any additional JavaScript. All video tags must have an id attribute. Configuration options can be set via a global variable named *lensConfig*.
+The default player will initialize for all video tags and does not require any additional JavaScript. Configuration options can be set via a global variable named *lensConfig*.
 
 ``` html
-<video id="lens-video" width="800" height="480" poster="http://media.w3.org/2010/05/sintel/poster.png">
+<video width="800" height="480" poster="http://media.w3.org/2010/05/sintel/poster.png">
 	<source src="http://media.w3.org/2010/05/sintel/trailer.mp4" />
 	<source src="http://media.w3.org/2010/05/sintel/trailer.webm" />
 </video>
@@ -54,7 +54,7 @@ var lensConfig = {
 require(['com/ericmatthys/Lens'],
 	function (Lens) {
 		Lens.initializePlayer({videoID: 'lens-video1'});
-		Lens.initializePlayer({videoID: 'lens-video2'});
+		Lens.initializePlayer({videoID: 'lens-video2', hideFullscreen: true});
 	}
 );
 ```
