@@ -18,7 +18,7 @@ define(
 					return;
 				}
 				
-			    // Set the config options if available
+				// Set the config options if available
 				if (typeof(options.videoID) !== 'undefined') {
 					this.set({ 'videoID': options.videoID });
 				}
