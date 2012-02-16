@@ -170,6 +170,9 @@ define(
 					volume: this.el.volume,
 					playbackRate: this.el.playbackRate
 				});
+				
+				// Calculate the buffer immediately in case the video is cached
+				this.onProgress();
 			},
 			
 			onProgress: function () {

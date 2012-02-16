@@ -11,7 +11,7 @@
 	},
 	modules: [
 		{
-			name: 'lens',
+			name: 'lens-0.1-min',
 			include: ['requireLib', 'main'],
 			create: true
 		}
