@@ -24,10 +24,7 @@ define(
 			},
 			
 			//---------- Init ----------
-			initialize: function (className) {
-				this.className = className;
-				this.setElement($('.' + className));
-				
+			initialize: function () {
 				_.bindAll(this, 'onSliderMouseMove', 'onSliderMouseUp');
 			},
 			

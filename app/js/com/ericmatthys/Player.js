@@ -1,36 +1,41 @@
 define(
 	[
-		'com/ericmatthys/models/PlayerModel',
+		'com/ericmatthys/models/Config',
+		'com/ericmatthys/models/Video',
 		'com/ericmatthys/views/Container',
 		'com/ericmatthys/views/Controls'
 	],
 	
-	function (PlayerModel, Container, Controls) {
-		var container;
-		var controls;
-        
-		return {
-			initialize: function () {
-				container = new Container();
-				
-				controls = new Controls({
-					$video: container.$el,
-					overlay: PlayerModel.config.get('overlayControls'),
-					showVolume: PlayerModel.config.get('showVolume'),
-					showFullscreen: (container.supportsFullscreen() && PlayerModel.config.get('showFullscreen')),
-					showPlaybackRate: (container.supportsPlaybackRate() && PlayerModel.config.get('showPlaybackRate'))
-				});
-				
-				// Route control events to the container
-				controls.on('playPause', container.playPause, container);
-				controls.on('sync', container.sync, container);
-				controls.on('seek', container.seek, container);
-				controls.on('setVolume', container.setVolume, container);
-				controls.on('setPlaybackRate', container.setPlaybackRate, container);
-				controls.on('enterFullscreen', container.enterFullscreen, container);
-				controls.on('exitFullscreen', container.exitFullscreen, container);
-				controls.seekBar.on('seek', container.seek, container);
-			}
-		}
+	function (Config, Video, Container, Controls) {
+		var Player = function (config) {
+			this.config = new Config(config);
+			this.video = new Video();
+			
+			this.container = new Container({
+				config: this.config,
+				video: this.video
+			});
+			
+			this.controls = new Controls({
+				config: this.config,
+				video: this.video,
+				overlay: this.config.get('overlayControls'),
+				showVolume: this.config.get('showVolume'),
+				showFullscreen: (this.container.supportsFullscreen() && this.config.get('showFullscreen')),
+				showPlaybackRate: (this.container.supportsPlaybackRate() && this.config.get('showPlaybackRate'))
+			});
+			
+			// Route control events to the container
+			this.controls.on('playPause', this.container.playPause, this.container);
+			this.controls.on('sync', this.container.sync, this.container);
+			this.controls.on('seek', this.container.seek, this.container);
+			this.controls.on('setVolume', this.container.setVolume, this.container);
+			this.controls.on('setPlaybackRate', this.container.setPlaybackRate, this.container);
+			this.controls.on('enterFullscreen', this.container.enterFullscreen, this.container);
+			this.controls.on('exitFullscreen', this.container.exitFullscreen, this.container);
+			this.controls.seekBar.on('seek', this.container.seek, this.container);
+		};
+		
+		return Player;
     }
 );

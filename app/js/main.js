@@ -11,10 +11,10 @@ require.config({
 
 require(
 	[
-	'com/ericmatthys/Player'
+	'com/ericmatthys/Lens'
 	],
 	
-	function (Player) {
-		Player.initialize();
+	function (Lens) {
+		Lens.initialize();
 	}
 );

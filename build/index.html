@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<video id="lens-video" 
+	<video id="lens-video1" 
 		width="800" height="480" 
 		poster="http://media.w3.org/2010/05/sintel/poster.png">
 		
@@ -18,15 +18,28 @@
 		
 	</video>
 	
-	<script type="text/javascript">
-		var lensConfig = {
-			overlayControls: false,
-			showPlaybackRate: true,
-			showVolume: true,
-			showFullscreen: true
-		}
-	</script>
+	<video id="lens-video2" 
+		width="800" height="480" 
+		poster="http://media.w3.org/2010/05/sintel/poster.png">
+		
+		<source src="http://media.w3.org/2010/05/sintel/trailer.mp4" />
+		<source src="http://media.w3.org/2010/05/sintel/trailer.webm" />
+		
+	</video>
 	
 	<script type="text/javascript" src="js/libs/zepto-0.8-min.js"></script>
 	<script type="text/javascript" src="js/lens.js"></script>
+	
+	<script type="text/javascript">
+		var lensConfig = {
+			manual: true
+		}
+		
+		require(['com/ericmatthys/Lens'],
+			function (Lens) {
+				Lens.initializePlayer({videoID: 'lens-video1', overlayControls: false, showPlaybackRate: false});
+				Lens.initializePlayer({videoID: 'lens-video2', overlayControls: false, showFullscreen: false});
+			}
+		);
+	</script>
 </body>

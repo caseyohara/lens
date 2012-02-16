@@ -7,7 +7,6 @@ js/libs/jquery.js
 js/libs/amd-backbone-0.9.1-min.js
 js/com/ericmatthys/models/Config.js
 js/com/ericmatthys/models/Video.js
-js/com/ericmatthys/models/PlayerModel.js
 js/com/ericmatthys/views/Container.js
 js/text.js
 text!templates/controls.html
@@ -17,4 +16,5 @@ text!templates/slider.html
 js/com/ericmatthys/views/Slider.js
 js/com/ericmatthys/views/Controls.js
 js/com/ericmatthys/Player.js
+js/com/ericmatthys/Lens.js
 js/main.js

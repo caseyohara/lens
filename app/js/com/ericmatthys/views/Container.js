@@ -1,10 +1,9 @@
 define(
 	[
-		'backbone',
-		'com/ericmatthys/models/PlayerModel'
+		'backbone'
 	],
 	
-	function (Backbone, PlayerModel) {
+	function (Backbone) {
 		//---------- Constants ----------
 		var WRAPPER_CLASS = 'emp-player-wrapper';
 		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';
@@ -12,7 +11,8 @@ define(
 		var Container = Backbone.View.extend({
 			
 			//---------- Properties ----------
-			el: '#' + PlayerModel.config.get('videoID'),
+			config: null,
+			video: null,
 			wrapper: null,
 			$wrapper: null,
 
@@ -25,19 +25,24 @@ define(
 			},
 			
 			//---------- Init ----------
-			initialize: function () {
+			initialize: function (options) {
+				this.config = options.config;
+				this.video = options.video;
+				
+				this.setElement($('#' + this.config.get('videoID')));
+				
 				_.bindAll(this, 'onFullscreenChange');
 				
 				if (typeof(this.el) === 'undefined') {
-					throw('A video tag with the id, ' + PlayerModel.config.get('videoID') + ', was not found.');
+					throw('A video tag with the id, ' + this.config.get('videoID') + ', was not found.');
 				} else {
 					// Store the initial width of the video
 					var videoWidth = this.$el.width();
 					
-					PlayerModel.video.set({width: videoWidth});
+					this.video.set({width: videoWidth});
 
 					// Create a div to wrap the video and controls in
-					var wrapperID = PlayerModel.config.get('videoID') + '-wrapper';
+					var wrapperID = this.config.get('videoID') + '-wrapper';
 					var wrapperEl = this.make('div', {'id': wrapperID, 'class': WRAPPER_CLASS});
 
 					this.$el.wrap(wrapperEl);
@@ -75,17 +80,17 @@ define(
 						el.currentTime = 0;
 					}
 					
-					PlayerModel.video.set({paused: false});
+					this.video.set({paused: false});
 					el.play();
 				} else {	
-					PlayerModel.video.set({paused: true});
+					this.video.set({paused: true});
 					el.pause();
 				}
 			},
 			
 			sync: function () {
 				var el = this.el;
-				var paused = PlayerModel.video.get('paused');
+				var paused = this.video.get('paused');
 				
 				if (paused !== el.paused) {
 					this.playPause();
@@ -97,12 +102,12 @@ define(
 			},
 			
 			setVolume: function (volume) {
-				PlayerModel.video.set({volume: volume});
+				this.video.set({volume: volume});
 				this.el.volume = volume;
 			},
 
 			setPlaybackRate: function (playbackRate) {
-				PlayerModel.video.set({playbackRate: playbackRate});
+				this.video.set({playbackRate: playbackRate});
 				this.el.playbackRate = playbackRate;
 			},
 			
@@ -121,7 +126,7 @@ define(
 					this.wrapper.webkitRequestFullScreen();
 				} else {
 					// Default back to the normal width if a function is not available
-					this.$wrapper.css('width', PlayerModel.video.get('width'));
+					this.$wrapper.css('width', this.video.get('width'));
 					this.$el.removeClass(FULLSCREEN_VIDEO_CLASS);
 				}
 			},
@@ -156,11 +161,11 @@ define(
 			//---------- Listeners ----------
 			onLoadedMetadata: function () {
 				var duration = this.el.duration;
-				var formattedDuration = PlayerModel.video.secondsToHms(duration);
+				var formattedDuration = this.video.secondsToHms(duration);
 				var time = this.el.currentTime;
-				var formattedTime = PlayerModel.video.secondsToHms(time);
+				var formattedTime = this.video.secondsToHms(time);
 				
-				PlayerModel.video.set({
+				this.video.set({
 					duration: duration,
 					formattedDuration: formattedDuration,
 					currentTime: time,
@@ -178,7 +183,7 @@ define(
 						var startBuffer = buffered.start(0);
 						var endBuffer = buffered.end(0);
 					
-						PlayerModel.video.set({
+						this.video.set({
 							startBuffer: startBuffer,
 							endBuffer: endBuffer
 						});
@@ -188,34 +193,34 @@ define(
 			
 			onCanPlayThrough: function () {
 				if (this.el.autoplay === true) {
-					PlayerModel.video.set({paused: false});
+					this.video.set({paused: false});
 					this.el.play();
 				}
 			},
 			
 			onTimeUpdate: function () {
 				var time = this.el.currentTime;
-				var formattedTime = PlayerModel.video.secondsToHms(time);
+				var formattedTime = this.video.secondsToHms(time);
 				
-				PlayerModel.video.set({currentTime: time});
-				PlayerModel.video.set({formattedTime: formattedTime});
+				this.video.set({currentTime: time});
+				this.video.set({formattedTime: formattedTime});
 			},
 			
 			onEnded: function () {
-				PlayerModel.video.set({paused: true});
+				this.video.set({paused: true});
 				this.el.pause();
 			},
 			
 			onFullscreenChange: function () {
-				if (PlayerModel.video.isFullscreen() === true) {
-					PlayerModel.video.set({fullscreen: true});
+				if (this.video.isFullscreen() === true) {
+					this.video.set({fullscreen: true});
 					this.$el.addClass(FULLSCREEN_VIDEO_CLASS);
 				} else {
-					PlayerModel.video.set({fullscreen: false});
+					this.video.set({fullscreen: false});
 					this.$el.removeClass(FULLSCREEN_VIDEO_CLASS);
 					
 					// Restore the wrapper to fit the original width
-					this.$wrapper.css('width', PlayerModel.video.get('width'));
+					this.$wrapper.css('width', this.video.get('width'));
 				}
 			}
 		});

@@ -1,13 +1,12 @@
 define(
 	[
 		'backbone',
-		'com/ericmatthys/models/PlayerModel',
 		'com/ericmatthys/views/SeekBar',
 		'com/ericmatthys/views/Slider',
 		'text!templates/controls.html'
 	],
 	
-	function (Backbone, PlayerModel, SeekBar, Slider, template) {
+	function (Backbone, SeekBar, Slider, template) {
 		//---------- Constants ----------
 		var OVERLAY_CONTROLS_CLASS = 'emp-controls-overlay';
 		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
@@ -17,6 +16,8 @@ define(
 		
 		var CURRENT_TIME_CLASS = 'emp-current-time';
 		var DURATION_CLASS = 'emp-duration';
+		
+		var SEEK_BAR_CLASS = 'emp-seek-bar';
 		
 		var SLIDER_BUTTON_CLASS = 'emp-slider-button'
 		
@@ -40,7 +41,8 @@ define(
 			
 			//---------- Properties ----------
 			className: 'emp-controls',
-			model: PlayerModel.video,
+			config: null,
+			video: null,
 			seekBar: null,
 			volumeSlider: null,
 			playbackRateSlider: null,
@@ -59,15 +61,16 @@ define(
 			
 			//---------- Init ----------
 			initialize: function (options) {
+				this.config = options.config;
+				this.video = options.video;
 				this.overlay = options.overlay;
 				this.showVolume = options.showVolume;
 				this.showFullscreen = options.showFullscreen;
 				this.showPlaybackRate = options.showPlaybackRate;
 				
-				_.bindAll(this, 'onDocumentMouseMove', 
-								'showControls', 
-								'hideControls');
+				_.bindAll(this, 'onDocumentMouseMove', 'showControls', 'hideControls');
 				
+				this.model = this.video;
 				this.model.bind('change:formattedDuration', this.onDurationChange, this);
 				this.model.bind('change:paused', this.onPausedChange, this);
 				this.model.bind('change:formattedTime', this.onCurrentTimeChange, this);
@@ -75,11 +78,12 @@ define(
 				this.model.bind('change:playbackRate', this.onPlaybackRateChange, this);
 				this.model.bind('change:fullscreen', this.onFullscreenChange, this);
 				
-				this.create(options.$video);
+				this.create(options);
 			},
 			
-			create: function ($video) {
+			create: function (options) {
 				// Create the controls element and insert it into the DOM
+				var $video = $('#' + this.config.get('videoID'));
 				var controlsEl = this.make('div', {'class': this.className});
 				$video.after(controlsEl);
 				
@@ -87,15 +91,18 @@ define(
 				this.render();
 				
 				// Create the seek bar
-				this.seekBar = new SeekBar();
+				this.seekBar = new SeekBar(options);
+				this.seekBar.setElement(this.$el.find('.' + SEEK_BAR_CLASS));
 				this.seekBar.render();
 				
 				// Create the volume slider
-				this.volumeSlider = new Slider(VOLUME_CLASS);
+				this.volumeSlider = new Slider();
+				this.volumeSlider.setElement(this.$el.find('.' + VOLUME_CLASS));
 				this.volumeSlider.render();
 				
 				// Create the playback rate slider
-				this.playbackRateSlider = new Slider(PLAYBACK_RATE_CLASS);
+				this.playbackRateSlider = new Slider();
+				this.playbackRateSlider.setElement(this.$el.find('.' + PLAYBACK_RATE_CLASS));
 				this.playbackRateSlider.render();
 				
 				// Adjust the sliders to their current values immediately
@@ -122,24 +129,24 @@ define(
 				
 				// Conditionally hide controls
 				if (this.showVolume === false) {
-					$('.' + VOLUME_CLASS).css('display', 'none');
-					$('.' + VOLUME_DIVIDER_CLASS).css('display', 'none');
+					this.$el.find('.' + VOLUME_CLASS).css('display', 'none');
+					this.$el.find('.' + VOLUME_DIVIDER_CLASS).css('display', 'none');
 				}
 				
 				if (this.showFullscreen === false) {
-					$('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
-					$('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
+					this.$el.find('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
+					this.$el.find('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
 				}
 				
 				if (this.showPlaybackRate === false) {
-					$('.' + PLAYBACK_RATE_CLASS).css('display', 'none');
-					$('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
+					this.$el.find('.' + PLAYBACK_RATE_CLASS).css('display', 'none');
+					this.$el.find('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
 				}	
 			},
 			
 			//---------- Control ----------
 			render: function () {
-				this.$el.html(_.template(template, PlayerModel.video.toJSON()));
+				this.$el.html(_.template(template, this.video.toJSON()));
 				
 				return this;
 			},
@@ -165,7 +172,7 @@ define(
 				// Prevent the click from navigating to a href value
 				event.preventDefault();
 				
-				if (PlayerModel.video.isFullscreen() === true) {
+				if (this.video.isFullscreen() === true) {
 					if (this.overlay === false) {
 						this.$el.removeClass(OVERLAY_CONTROLS_CLASS);
 					}
@@ -180,7 +187,7 @@ define(
 			
 			onFullscreenChange: function () {
 				if (this.overlay === false) {
-					if (PlayerModel.video.isFullscreen() === true) {
+					if (this.video.isFullscreen() === true) {
 						// Hide the controls on mouse inactivity
 						$(document).bind('mousemove', this.onDocumentMouseMove);
 						
@@ -214,28 +221,28 @@ define(
 			
 			onPausedChange: function () {
 				// Update the play/pause button
-				var paused = PlayerModel.video.get('paused');
+				var paused = this.video.get('paused');
 				
 				if (paused) {
-					$('.' + PLAY_PAUSE_CLASS).removeClass(PAUSE_CLASS);
+					this.$el.find('.' + PLAY_PAUSE_CLASS).removeClass(PAUSE_CLASS);
 				} else {
-					$('.' + PLAY_PAUSE_CLASS).addClass(PAUSE_CLASS);
+					this.$el.find('.' + PLAY_PAUSE_CLASS).addClass(PAUSE_CLASS);
 				}
 			},
 			
 			onCurrentTimeChange: function () {
 				// Update the current time value
-				$('.' + CURRENT_TIME_CLASS).html(PlayerModel.video.get('formattedTime'));
+				this.$el.find('.' + CURRENT_TIME_CLASS).html(this.video.get('formattedTime'));
 			},
 			
 			onDurationChange: function () {
 				// Update the duration value
-				$('.' + DURATION_CLASS).html(PlayerModel.video.get('formattedDuration'));
+				this.$el.find('.' + DURATION_CLASS).html(this.video.get('formattedDuration'));
 			},
 			
 			onVolumeChange: function () {
-				var $volumeButton = $('.' + VOLUME_CLASS + ' .' + SLIDER_BUTTON_CLASS);
-				var volume = PlayerModel.video.get('volume');
+				var $volumeButton = this.$el.find('.' + VOLUME_CLASS + ' .' + SLIDER_BUTTON_CLASS);
+				var volume = this.video.get('volume');
 				
 				// Update the slider
 				this.volumeSlider.setValue(volume);
@@ -257,8 +264,8 @@ define(
 			},
 			
 			onPlaybackRateChange: function () {
-				var $playbackRateButton = $('.' + PLAYBACK_RATE_CLASS + ' .' + SLIDER_BUTTON_CLASS);
-				var playbackRate = PlayerModel.video.get('playbackRate');
+				var $playbackRateButton = this.$el.find('.' + PLAYBACK_RATE_CLASS + ' .' + SLIDER_BUTTON_CLASS);
+				var playbackRate = this.video.get('playbackRate');
 				
 				// Update the slider
 				this.playbackRateSlider.setValue(playbackRate / 3);
@@ -314,7 +321,7 @@ define(
 					this.mutedVolume = 0;
 				} else {
 					this.muted = true;
-					this.mutedVolume = PlayerModel.video.get('volume');
+					this.mutedVolume = this.video.get('volume');
 					
 					this.trigger('setVolume', 0);
 				}
@@ -325,7 +332,7 @@ define(
 			},
 			
 			onPlaybackRateSliderButtonClick: function () {
-				var playbackRate = PlayerModel.video.get('playbackRate');
+				var playbackRate = this.video.get('playbackRate');
 				
 				if (playbackRate < .1) {
 					this.trigger('setPlaybackRate', .1);
