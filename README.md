@@ -4,7 +4,7 @@ Lens provides the base architecture for an HTML5 video player that can be easily
 
 # Usage
 
-Either jQuery or Zepto must be used alongside Lens. The video wrapper and controls will be injected around the video tag with the correct element id.
+Either jQuery or Zepto must be used alongside Lens. The video wrapper and controls will be injected around the video tags.
 
 For ease of use and to reduce HTTP requests, Underscore, Backbone, and RequireJS are packaged into the lens.js script.
 
