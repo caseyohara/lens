@@ -8,12 +8,11 @@ define(
 			players: [],
 			
 			initialize: function () {
+				// Determine whether to automatically initialize the player
 				if (typeof(window.lensConfig) !== 'undefined') {
 					var c = window.lensConfig;
 
-					if (c.manual === true) {
-						console.log('manual mode');
-					} else {
+					if (c.manual !== true) {
 						this.initializePlayer(c);
 					}
 				} else {
