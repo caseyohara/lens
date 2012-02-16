@@ -54,8 +54,8 @@ define(
 					this.$wrapper.css('width', videoWidth);
 					
 					// Listen for fullscreen changes
-					this.$wrapper.bind('webkitfullscreenchange', this.onFullscreenChange);
-					this.$wrapper.bind('mozfullscreenchange', this.onFullscreenChange);
+					this.$wrapper.on('webkitfullscreenchange', this.onFullscreenChange);
+					this.$wrapper.on('mozfullscreenchange', this.onFullscreenChange);
 					
 					// If the video is muted, make sure the controls reflect this
 					if (this.el.muted === true) {

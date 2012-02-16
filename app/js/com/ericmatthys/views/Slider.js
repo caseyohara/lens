@@ -88,8 +88,8 @@ define(
 				// Prevent the click from trying to select
 				event.preventDefault();
 				
-				$(document).bind('mousemove', this.onSliderMouseMove);
-				$(document).bind('mouseup', this.onSliderMouseUp);
+				$(document).on('mousemove', this.onSliderMouseMove);
+				$(document).on('mouseup', this.onSliderMouseUp);
 				
 				this.dragging = true;
 				this.$el.addClass(ACTIVE_SLIDER_CLASS);
@@ -108,8 +108,8 @@ define(
 				// Prevent the click from trying to select
 				event.preventDefault();
 				
-				$(document).unbind('mousemove', this.onVolumeSliderMouseMove);
-				$(document).unbind('mouseup', this.onVolumeSliderMouseUp);
+				$(document).off('mousemove', this.onVolumeSliderMouseMove);
+				$(document).off('mouseup', this.onVolumeSliderMouseUp);
 				
 				this.dragging = false;
 				this.$el.removeClass(ACTIVE_SLIDER_CLASS);

@@ -56,8 +56,8 @@ define(
 				// Prevent the click from trying to select
 				event.preventDefault();
 				
-				$(document).bind('mousemove', this.onSeekBarMouseMove);
-				$(document).bind('mouseup', this.onSeekBarMouseUp);
+				$(document).on('mousemove', this.onSeekBarMouseMove);
+				$(document).on('mouseup', this.onSeekBarMouseUp);
 				
 				this.seek(event.pageX);
 			},
@@ -73,8 +73,8 @@ define(
 				// Prevent the click from trying to select
 				event.preventDefault();
 
-				$(document).unbind('mousemove', this.onSeekBarMouseMove);
-				$(document).unbind('mouseup', this.onSeekBarMouseUp);
+				$(document).off('mousemove', this.onSeekBarMouseMove);
+				$(document).off('mouseup', this.onSeekBarMouseUp);
 					
 				this.seek(event.pageX);
 			},

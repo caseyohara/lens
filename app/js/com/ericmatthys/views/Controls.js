@@ -121,7 +121,7 @@ define(
 					this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 					
 					// Hide the controls on mouse inactivity
-					$(document).bind('mousemove', this.onDocumentMouseMove);
+					$(document).on('mousemove', this.onDocumentMouseMove);
 
 					// Start the setTimeout immediately
 					this.onDocumentMouseMove();
@@ -189,14 +189,14 @@ define(
 				if (this.overlay === false) {
 					if (this.video.isFullscreen() === true) {
 						// Hide the controls on mouse inactivity
-						$(document).bind('mousemove', this.onDocumentMouseMove);
+						$(document).on('mousemove', this.onDocumentMouseMove);
 						
 						// Start the setTimeout immediately
 						this.onDocumentMouseMove();
 						
 						this.$el.addClass(OVERLAY_CONTROLS_CLASS);
 					} else {
-						$(document).unbind('mousemove', this.onDocumentMouseMove);
+						$(document).off('mousemove', this.onDocumentMouseMove);
 					
 						// Make sure the controls are visible again
 						this.showControls();
