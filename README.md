@@ -85,11 +85,11 @@ var lensConfig = {
 **overlayControls**
 (Boolean) Overlays the control bar on top of the video instead of it beneath the video.
 
-**showVolume**
+**hideVolume**
 (Boolean) Hides the volume control.
 
-**showFullscreen**
+**hideFullscreen**
 (Boolean) Hides the fullscreen control (if supported).
 
-**showPlaybackRate**
+**hidePlaybackRate**
 (Boolean) Hides the playback rate control (if supported).
