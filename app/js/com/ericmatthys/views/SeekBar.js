@@ -97,7 +97,8 @@ define(
 				}
 				
 				$thumb.css('left', barWidth - thumbRadius);
-				$bar.width(barWidth);
+				$bar.css('width', barWidth);
+				console.log(trackWidth);
 			},
 			
 			onBufferChange: function () {
@@ -111,7 +112,7 @@ define(
 				var width = endPct * seekBarWidth - startPosition;
 				
 				$bufferBar.css('left', startPosition);
-				$bufferBar.width(width);
+				$bufferBar.css('width', width);
 			}
 		});
 		

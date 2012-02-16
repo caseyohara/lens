@@ -213,14 +213,14 @@ define(
 			
 			onFullscreenChange: function () {
 				if (this.video.isFullscreen() === true) {
-					this.video.set({fullscreen: true});
 					this.$el.addClass(FULLSCREEN_VIDEO_CLASS);
+					this.video.set({fullscreen: true});
 				} else {
-					this.video.set({fullscreen: false});
-					this.$el.removeClass(FULLSCREEN_VIDEO_CLASS);
-					
 					// Restore the wrapper to fit the original width
 					this.$wrapper.css('width', this.video.get('width'));
+					
+					this.$el.removeClass(FULLSCREEN_VIDEO_CLASS);
+					this.video.set({fullscreen: false});
 				}
 			}
 		});
