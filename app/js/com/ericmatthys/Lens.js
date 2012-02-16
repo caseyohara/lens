@@ -33,7 +33,7 @@ define(
 				// Initialize a player for each video tag
 				$('video').each(function () {
 					var clonedConfig = _.clone(config);
-					clonedConfig.videoID = this.id;
+					clonedConfig.$video = $(this);
 					
 					Lens.initializePlayer(clonedConfig);
 				});

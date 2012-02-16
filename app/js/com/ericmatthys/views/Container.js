@@ -29,12 +29,12 @@ define(
 				this.config = options.config;
 				this.video = options.video;
 				
-				this.setElement($('#' + this.config.get('videoID')));
+				this.setElement(this.config.get('$video'));
 				
 				_.bindAll(this, 'onFullscreenChange');
 				
 				if (typeof(this.el) === 'undefined') {
-					throw('A video tag with the id, ' + this.config.get('videoID') + ', was not found.');
+					throw('The video element initialized was not found.');
 				} else {
 					// Store the initial width of the video
 					var videoWidth = this.$el.width();
@@ -42,12 +42,9 @@ define(
 					this.video.set({width: videoWidth});
 
 					// Create a div to wrap the video and controls in
-					var wrapperID = this.config.get('videoID') + '-wrapper';
-					var wrapperEl = this.make('div', {'id': wrapperID, 'class': WRAPPER_CLASS});
+					var wrapperEl = this.make('div', {'class': WRAPPER_CLASS});
 
-					this.$el.wrap(wrapperEl);
-
-					this.$wrapper = $('#' + wrapperID);
+					this.$wrapper = this.$el.wrap(wrapperEl).parent();
 					this.wrapper = this.$wrapper.get(0);
 
 					// Adjust the width of the wrapper to the width of the video

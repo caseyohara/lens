@@ -83,7 +83,7 @@ define(
 			
 			create: function (options) {
 				// Create the controls element and insert it into the DOM
-				var $video = $('#' + this.config.get('videoID'));
+				var $video = this.config.get('$video');
 				var controlsEl = this.make('div', {'class': this.className});
 				$video.after(controlsEl);
 				
