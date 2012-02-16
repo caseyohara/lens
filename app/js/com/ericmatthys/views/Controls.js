@@ -41,7 +41,6 @@ define(
 			
 			//---------- Properties ----------
 			className: 'lens-controls',
-			config: null,
 			video: null,
 			seekBar: null,
 			volumeSlider: null,
@@ -49,9 +48,9 @@ define(
 			muted: false,
 			mutedVolume: 0,
 			overlay: false,
-			showVolume: false,
-			showFullscreen: false,
-			showPlaybackRate: false,
+			hideVolume: false,
+			hideFullscreen: false,
+			hidePlaybackRate: false,
 			hideControlsTimeout: null,
 
 			events: {
@@ -61,12 +60,11 @@ define(
 			
 			//---------- Init ----------
 			initialize: function (options) {
-				this.config = options.config;
 				this.video = options.video;
 				this.overlay = options.overlay;
-				this.showVolume = options.showVolume;
-				this.showFullscreen = options.showFullscreen;
-				this.showPlaybackRate = options.showPlaybackRate;
+				this.hideVolume = options.hideVolume;
+				this.hideFullscreen = options.hideFullscreen;
+				this.hidePlaybackRate = options.hidePlaybackRate;
 				
 				_.bindAll(this, 'onDocumentMouseMove', 'showControls', 'hideControls');
 				
@@ -83,9 +81,8 @@ define(
 			
 			create: function (options) {
 				// Create the controls element and insert it into the DOM
-				var $video = this.config.get('$video');
 				var controlsEl = this.make('div', {'class': this.className});
-				$video.after(controlsEl);
+				options.$video.after(controlsEl);
 				
 				this.setElement(controlsEl);
 				this.render();
@@ -110,6 +107,7 @@ define(
 				this.onPlaybackRateChange();
 				
 				// Bind to custom events from the slider control
+				this.seekBar.on('seek', this.onSeek, this);
 				this.volumeSlider.on('buttonClick', this.onVolumeSliderButtonClick, this);
 				this.volumeSlider.on('valueChange', this.onVolumeSliderValueChange, this);
 				this.playbackRateSlider.on('buttonClick', this.onPlaybackRateSliderButtonClick, this);
@@ -128,17 +126,17 @@ define(
 				}
 				
 				// Conditionally hide controls
-				if (this.showVolume === false) {
+				if (this.hideVolume === true) {
 					this.$el.find('.' + VOLUME_CLASS).css('display', 'none');
 					this.$el.find('.' + VOLUME_DIVIDER_CLASS).css('display', 'none');
 				}
 				
-				if (this.showFullscreen === false) {
+				if (this.hideFullscreen === true) {
 					this.$el.find('.' + FULLSCREEN_BUTTON_CLASS).css('display', 'none');
 					this.$el.find('.' + FULLSCREEN_DIVIDER_CLASS).css('display', 'none');
 				}
 				
-				if (this.showPlaybackRate === false) {
+				if (this.hidePlaybackRate === true) {
 					this.$el.find('.' + PLAYBACK_RATE_CLASS).css('display', 'none');
 					this.$el.find('.' + PLAYBACK_RATE_DIVIDER_CLASS).css('display', 'none');
 				}	
@@ -307,6 +305,10 @@ define(
 					$playbackRateButton.removeClass(PLAYBACK_RATE_BUTTON_2X_CLASS);
 					$playbackRateButton.removeClass(PLAYBACK_RATE_BUTTON_3X_CLASS);
 				}
+			},
+			
+			onSeek: function (value) {
+				this.trigger('seek', value);
 			},
 			
 			onVolumeSliderButtonClick: function () {

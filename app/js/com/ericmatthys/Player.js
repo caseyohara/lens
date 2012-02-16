@@ -17,12 +17,12 @@ define(
 			});
 			
 			this.controls = new Controls({
-				config: this.config,
 				video: this.video,
+				$video: this.config.get('$video'),
 				overlay: this.config.get('overlayControls'),
-				showVolume: !this.config.get('hideVolume'),
-				showFullscreen: (this.container.supportsFullscreen() && !this.config.get('hideFullscreen')),
-				showPlaybackRate: (this.container.supportsPlaybackRate() && !this.config.get('hidePlaybackRate'))
+				hideVolume: this.config.get('hideVolume'),
+				hideFullscreen: (this.container.supportsFullscreen() === false || this.config.get('hideFullscreen') === true),
+				hidePlaybackRate: (this.container.supportsPlaybackRate() === false || this.config.get('hidePlaybackRate') === true)
 			});
 			
 			// Route control events to the container
@@ -33,7 +33,6 @@ define(
 			this.controls.on('setPlaybackRate', this.container.setPlaybackRate, this.container);
 			this.controls.on('enterFullscreen', this.container.enterFullscreen, this.container);
 			this.controls.on('exitFullscreen', this.container.exitFullscreen, this.container);
-			this.controls.seekBar.on('seek', this.container.seek, this.container);
 		};
 		
 		return Player;
