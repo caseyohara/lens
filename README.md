@@ -83,7 +83,7 @@ var lensConfig = {
 (String) The id attribute of a video tag to be initialized.
 
 **overlayControls**
-(Boolean) Overlays the control bar on top of the video instead of it beneath the video.
+(Boolean) Overlays the control bar on top of the video instead of inserting it beneath the video.
 
 **hideVolume**
 (Boolean) Hides the volume control.
