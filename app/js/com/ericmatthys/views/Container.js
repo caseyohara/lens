@@ -5,8 +5,8 @@ define(
 	
 	function (Backbone) {
 		//---------- Constants ----------
-		var WRAPPER_CLASS = 'emp-player-wrapper';
-		var FULLSCREEN_VIDEO_CLASS = 'emp-video-fullscreen';
+		var WRAPPER_CLASS = 'lens-player-wrapper';
+		var FULLSCREEN_VIDEO_CLASS = 'lens-video-fullscreen';
 		
 		var Container = Backbone.View.extend({
 			

@@ -8,39 +8,39 @@ define(
 	
 	function (Backbone, SeekBar, Slider, template) {
 		//---------- Constants ----------
-		var OVERLAY_CONTROLS_CLASS = 'emp-controls-overlay';
-		var COLLAPSED_CONTROLS_CLASS = 'emp-controls-collapsed';
+		var OVERLAY_CONTROLS_CLASS = 'lens-controls-overlay';
+		var COLLAPSED_CONTROLS_CLASS = 'lens-controls-collapsed';
 		
-		var PLAY_PAUSE_CLASS = 'emp-play-pause-button';
-		var PAUSE_CLASS = 'emp-pause-button';
+		var PLAY_PAUSE_CLASS = 'lens-play-pause-button';
+		var PAUSE_CLASS = 'lens-pause-button';
 		
-		var CURRENT_TIME_CLASS = 'emp-current-time';
-		var DURATION_CLASS = 'emp-duration';
+		var CURRENT_TIME_CLASS = 'lens-current-time';
+		var DURATION_CLASS = 'lens-duration';
 		
-		var SEEK_BAR_CLASS = 'emp-seek-bar';
+		var SEEK_BAR_CLASS = 'lens-seek-bar';
 		
-		var SLIDER_BUTTON_CLASS = 'emp-slider-button'
+		var SLIDER_BUTTON_CLASS = 'lens-slider-button'
 		
-		var VOLUME_CLASS = 'emp-volume';
-		var VOLUME_DIVIDER_CLASS = 'emp-divider-volume';
-		var VOLUME_BUTTON_LOW_CLASS = 'emp-volume-button-low';
-		var VOLUME_BUTTON_OFF_CLASS = 'emp-volume-button-off';
+		var VOLUME_CLASS = 'lens-volume';
+		var VOLUME_DIVIDER_CLASS = 'lens-divider-volume';
+		var VOLUME_BUTTON_LOW_CLASS = 'lens-volume-button-low';
+		var VOLUME_BUTTON_OFF_CLASS = 'lens-volume-button-off';
 		
-		var PLAYBACK_RATE_CLASS = 'emp-playback-rate';
-		var PLAYBACK_RATE_DIVIDER_CLASS = 'emp-divider-playback-rate';
-		var PLAYBACK_RATE_BUTTON_POINT1X_CLASS = 'emp-playback-rate-button-point1x';
-		var PLAYBACK_RATE_BUTTON_POINT5X_CLASS = 'emp-playback-rate-button-point5x';
-		var PLAYBACK_RATE_BUTTON_1X_CLASS = 'emp-playback-rate-button-1x';
-		var PLAYBACK_RATE_BUTTON_2X_CLASS = 'emp-playback-rate-button-2x';
-		var PLAYBACK_RATE_BUTTON_3X_CLASS = 'emp-playback-rate-button-3x';
+		var PLAYBACK_RATE_CLASS = 'lens-playback-rate';
+		var PLAYBACK_RATE_DIVIDER_CLASS = 'lens-divider-playback-rate';
+		var PLAYBACK_RATE_BUTTON_POINT1X_CLASS = 'lens-playback-rate-button-point1x';
+		var PLAYBACK_RATE_BUTTON_POINT5X_CLASS = 'lens-playback-rate-button-point5x';
+		var PLAYBACK_RATE_BUTTON_1X_CLASS = 'lens-playback-rate-button-1x';
+		var PLAYBACK_RATE_BUTTON_2X_CLASS = 'lens-playback-rate-button-2x';
+		var PLAYBACK_RATE_BUTTON_3X_CLASS = 'lens-playback-rate-button-3x';
 		
-		var FULLSCREEN_BUTTON_CLASS = 'emp-fullscreen-button';
-		var FULLSCREEN_DIVIDER_CLASS = 'emp-divider-fullscreen';
+		var FULLSCREEN_BUTTON_CLASS = 'lens-fullscreen-button';
+		var FULLSCREEN_DIVIDER_CLASS = 'lens-divider-fullscreen';
 		
 		var Controls = Backbone.View.extend({
 			
 			//---------- Properties ----------
-			className: 'emp-controls',
+			className: 'lens-controls',
 			config: null,
 			video: null,
 			seekBar: null,
@@ -55,8 +55,8 @@ define(
 			hideControlsTimeout: null,
 
 			events: {
-				'click .emp-play-pause-button': 'onPlayPauseClick',
-				'click .emp-fullscreen-button': 'onFullscreenButtonClick'
+				'click .lens-play-pause-button': 'onPlayPauseClick',
+				'click .lens-fullscreen-button': 'onFullscreenButtonClick'
 			},
 			
 			//---------- Init ----------

@@ -6,11 +6,11 @@ define(
 	
 	function (Backbone, template) {
 		//---------- Constants ----------
-		var ACTIVE_SLIDER_CLASS = 'emp-active-slider';
-		var BUTTON_CLASS = 'emp-slider-button';
-		var TRACK_CLASS = 'emp-slider-track';
-		var THUMB_CLASS = 'emp-slider-thumb';
-		var BAR_CLASS = 'emp-slider-bar';
+		var ACTIVE_SLIDER_CLASS = 'lens-active-slider';
+		var BUTTON_CLASS = 'lens-slider-button';
+		var TRACK_CLASS = 'lens-slider-track';
+		var THUMB_CLASS = 'lens-slider-thumb';
+		var BAR_CLASS = 'lens-slider-bar';
 		
 		var Slider = Backbone.View.extend({
 			
@@ -19,8 +19,8 @@ define(
 			dragging: false,
 			
 			events: {
-				'click .emp-slider-button': 'onButtonClick',
-				'mousedown .emp-slider-track': 'onSliderMouseDown',
+				'click .lens-slider-button': 'onButtonClick',
+				'mousedown .lens-slider-track': 'onSliderMouseDown',
 			},
 			
 			//---------- Init ----------

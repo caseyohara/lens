@@ -6,9 +6,9 @@ define(
 	
 	function (Backbone, template) {
 		//---------- Constants ----------
-		var BUFFER_BAR_CLASS = 'emp-buffer-bar';
-		var PROGRESS_BAR_CLASS = 'emp-progress-bar';
-		var PROGRESS_THUMB_CLASS = 'emp-progress-thumb';
+		var BUFFER_BAR_CLASS = 'lens-buffer-bar';
+		var PROGRESS_BAR_CLASS = 'lens-progress-bar';
+		var PROGRESS_THUMB_CLASS = 'lens-progress-thumb';
 		
 		var SeekBar = Backbone.View.extend({
 			
@@ -98,7 +98,6 @@ define(
 				
 				$thumb.css('left', barWidth - thumbRadius);
 				$bar.css('width', barWidth);
-				console.log(trackWidth);
 			},
 			
 			onBufferChange: function () {
